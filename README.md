@@ -1,15 +1,8 @@
-# Polymer App Toolbox - Starter Kit
+# Polymer Redux Starter Kit
 
-[![Build Status](https://travis-ci.org/PolymerElements/polymer-starter-kit.svg?branch=master)](https://travis-ci.org/PolymerElements/polymer-starter-kit)
+[![Build Status](https://travis-ci.org/daniel-cotton/polymer-redux-starter.svg?branch=master)](https://travis-ci.org/daniel-cotton/polymer-redux-starter)
 
-This template is a starting point for building apps using a drawer-based
-layout. The layout is provided by `app-layout` elements.
-
-This template, along with the `polymer-cli` toolchain, also demonstrates use
-of the "PRPL pattern" This pattern allows fast first delivery and interaction with
-the content at the initial route requested by the user, along with fast subsequent
-navigation by pre-caching the remaining components required by the app and
-progressively loading them on-demand as the user navigates through the app.
+This template offers a starting point, based upon <a href="https://github.com/PolymerElements/polymer-starter-kit">Polymer App Toolbox - Starter Kit</a>. Implementing <a href="https://github.com/tur-nr/polymer-redux">polymer-redux</a>.
 
 The PRPL pattern, in a nutshell:
 
@@ -40,12 +33,6 @@ First, install [Polymer CLI](https://github.com/Polymer/polymer-cli) using
 [npm](https://www.npmjs.com) (we assume you have pre-installed [node.js](https://nodejs.org)).
 
     npm install -g polymer-cli
-
-##### Initialize project from template
-
-    mkdir my-app
-    cd my-app
-    polymer init starter-kit
 
 ### Start the development server
 
