@@ -30,19 +30,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
+    /* global ReduxBehavior */
     Polymer({
       is: 'my-view2',
-      behaviors: [ ReduxBehavior ],
+      behaviors: [ReduxBehavior],
       actions: {
         increment: function() {
           return {
-            type: 'INCREMENT_COUNT'
+            type: 'INCREMENT_COUNT',
           };
-        }
+        },
       },
       _increment: function() {
-        this.dispatch('increment')
-      }
+        this.dispatch('increment');
+      },
     });
   </script>
 </dom-module>

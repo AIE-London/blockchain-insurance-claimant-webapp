@@ -1,0 +1,22 @@
+<script>
+    /* eslint no-unused-vars: "off" */
+    var initialState = {
+        count: 0,
+    };
+    var reducers = function(state, action) {
+        if (!state) {
+            state = initialState;
+        }
+        if (!action) {
+            action = {};
+        }
+        switch (action.type) {
+            case 'INCREMENT_COUNT':
+                return Object.assign({}, state, {
+                    counter: state.count++,
+                });
+            default:
+                return state;
+        }
+    };
+</script>

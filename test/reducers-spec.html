@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>Reducers</title>
+
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../bower_components/web-component-tester/browser.js"></script>
+
+    <!-- Import the element to test -->
+    <link rel="import" href="../src/reducers/redux-reducers.html">
+</head>
+<body>
+<test-fixture id="reducers">
+    <template>
+    </template>
+</test-fixture>
+
+<script>
+    /* global reducers, expect */
+
+    suite('reducer tests', function() {
+        test('initial state should be initialised with count zero', function() {
+            expect(reducers()).to.deep.equal({count: 0});
+        });
+    });
+</script>
+</body>
+</html>

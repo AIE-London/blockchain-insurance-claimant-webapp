@@ -1,7 +1,10 @@
 <link rel="import" href="/bower_components/polymer-redux/polymer-redux.html">
-<script src="../reducers/reducers.js"></script>
+<link rel="import" href="../reducers/redux-reducers.html"/>
 
 <script>
-    const store = Redux.createStore(reducer);
-    const ReduxBehavior = PolymerRedux(store);
+    /* eslint new-cap: "off" */
+    /* eslint no-unused-vars: "off" */
+    /* global Redux, reducers, PolymerRedux */
+    var store = Redux.createStore(reducers);
+    var ReduxBehavior = PolymerRedux(store);
 </script>
