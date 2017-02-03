@@ -24,14 +24,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="card">
       <div class="circle">2</div>
       <h1>View Two</h1>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.</p>
-      <p>Id nam odio natum malorum, tibique copiosae expetenda mel ea.Detracto suavitate repudiandae no eum. Id adhuc minim soluta nam.Id nam odio natum malorum, tibique copiosae expetenda mel ea.</p>
+      <p>You can also increment the count here.</p>
+      <button on-tap="_increment">Increment</button>
     </div>
   </template>
 
   <script>
     Polymer({
       is: 'my-view2',
+      behaviors: [ ReduxBehavior ],
+      actions: {
+        increment: function() {
+          return {
+            type: 'INCREMENT_COUNT'
+          };
+        }
+      },
+      _increment: function() {
+        this.dispatch('increment')
+      }
     });
   </script>
 </dom-module>

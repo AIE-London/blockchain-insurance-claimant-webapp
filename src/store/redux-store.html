@@ -1,0 +1,7 @@
+<link rel="import" href="/bower_components/polymer-redux/polymer-redux.html">
+<script src="../reducers/reducers.js"></script>
+
+<script>
+    const store = Redux.createStore(reducer);
+    const ReduxBehavior = PolymerRedux(store);
+</script>
