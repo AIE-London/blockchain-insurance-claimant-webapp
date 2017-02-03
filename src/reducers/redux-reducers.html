@@ -13,7 +13,7 @@
         switch (action.type) {
             case 'INCREMENT_COUNT':
                 return Object.assign({}, state, {
-                    counter: state.count++,
+                    count: state.count + 1,
                 });
             default:
                 return state;

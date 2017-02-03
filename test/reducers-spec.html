@@ -25,6 +25,9 @@
         test('initial state should be initialised with count zero', function() {
             expect(reducers()).to.deep.equal({count: 0});
         });
+        test('after single increment - state should have count 1', function() {
+            expect(reducers(reducers(), {type: 'INCREMENT_COUNT'})).to.deep.equal({count: 1});
+        });
     });
 </script>
 </body>
