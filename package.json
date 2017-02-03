@@ -8,6 +8,7 @@
   },
   "scripts": {
     "lint": "eslint . --ext js,html --ignore-path .gitignore",
-    "test": "npm run lint && polymer test"
+    "test": "npm run lint && polymer test",
+    "start": "polymer serve"
   }
 }
