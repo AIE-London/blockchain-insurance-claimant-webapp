@@ -28,6 +28,14 @@
         test('after single increment - state should have count 1', function() {
             expect(reducers(reducers(), {type: 'INCREMENT_COUNT'})).to.deep.equal({count: 1});
         });
+        test('after random increment - state should have count equal to random', function() {
+            const rand = Math.floor(Math.random() * 1000);
+            let state = reducers();
+            for (let count = 0; count < rand; count++){
+                state = reducers(state, {type: 'INCREMENT_COUNT'});
+            }
+            expect(state).to.deep.equal({count: rand});
+        });
     });
 </script>
 </body>
