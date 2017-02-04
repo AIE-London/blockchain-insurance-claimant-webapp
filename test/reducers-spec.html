@@ -31,7 +31,7 @@
         test('after random increment - state should have count equal to random', function() {
             var rand = Math.floor(Math.random() * 1000);
             var state = reducers();
-            for (let count = 0; count < rand; count++){
+            for (var count = 0; count < rand; count++){
                 state = reducers(state, {type: 'INCREMENT_COUNT'});
             }
             expect(state).to.deep.equal({count: rand});
