@@ -1,9 +1,9 @@
 <script>
     /* eslint no-unused-vars: "off" */
-    var initialState = {
+    const initialState = {
         count: 0,
     };
-    var reducers = function(state, action) {
+    let reducers = (state, action) => {
         if (!state) {
             state = initialState;
         }

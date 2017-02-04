@@ -8,8 +8,8 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="store/redux-store.html">
-<link rel="import" href="shared-styles.html">
+<link rel="import" href="./store/redux-store.html">
+<link rel="import" href="./shared-styles.html">
 
 <dom-module id="my-view2">
   <template>
@@ -23,8 +23,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="card">
       <div class="circle">2</div>
-      <h1>View Two</h1>
-      <p>You can also increment the count here.</p>
+      <h1>View 2</h1>
+      <p>You can also increment the count here. Look at the running count: [[count]]</p>
       <button on-tap="_increment">Increment</button>
     </div>
   </template>
@@ -39,6 +39,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return {
             type: 'INCREMENT_COUNT',
           };
+        },
+      },
+      properties: {
+        count: {
+          type: Number,
+          statePath: 'count',
         },
       },
       _increment: function() {
