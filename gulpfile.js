@@ -8,8 +8,12 @@ var gulpif = require('gulp-if');
 var sourcemaps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
 
-gulp.copy = function(src,dest){
+gulp.copy = function(src, dest){
     return gulp.src(src, {base:"."})
+        .pipe(gulp.dest(dest));
+};
+gulp.copyBase = function(src, dest, base){
+    return gulp.src(src, {base: base})
         .pipe(gulp.dest(dest));
 };
 
@@ -53,6 +57,7 @@ gulp.task('test', ['test-exec'], function () {
 
 gulp.task('clean', function () {
     del(['.tmp/']);
+    del(['dist/']);
 });
 
 gulp.task('serve', ['copy-temp'], function (onComplete) {
@@ -62,4 +67,15 @@ gulp.task('serve', ['copy-temp'], function (onComplete) {
         onComplete(error);
     });
     gulp.watch('src/**/*', ['copy-temp']);
+});
+
+
+gulp.task('build', ['copy-temp'], function (onComplete) {
+    spawn('polymer', ['build'], { cwd: '.tmp/', stdio: 'inherit' })
+        .on('close', function (){
+            gulp.copyBase('.tmp/build/**/*', 'dist', '.tmp/build');
+            onComplete();
+        }).on('error', function (error) {
+            onComplete("ERROR");
+        });
 });
