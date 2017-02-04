@@ -43,6 +43,7 @@ gulp.task('copy-temp', ['transpile-es2015'], function () {
     gulp.copy('manifest.json', '.tmp');
     gulp.copy('service-worker.js', '.tmp');
     gulp.copy('sw-precache-config.js', '.tmp');
+    gulp.copy('images/**/*', '.tmp');
 });
 
 gulp.task('test-exec', ['copy-temp'], function (onComplete) {
