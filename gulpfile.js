@@ -7,7 +7,6 @@ var crisper = require('gulp-crisper');
 var gulpif = require('gulp-if');
 var sourcemaps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
-var PolymerProject = require('polymer-build').PolymerProject;
 
 gulp.copy = function(src, dest){
     return gulp.src(src, {base:"."})
