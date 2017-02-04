@@ -7,6 +7,7 @@ var crisper = require('gulp-crisper');
 var gulpif = require('gulp-if');
 var sourcemaps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
+var PolymerProject = require('polymer-build').PolymerProject;
 
 gulp.copy = function(src, dest){
     return gulp.src(src, {base:"."})
@@ -40,6 +41,9 @@ gulp.task('copy-temp', ['transpile-es2015'], function () {
     gulp.copy('bower.json', '.tmp');
     gulp.copy('package.json', '.tmp');
     gulp.copy('polymer.json', '.tmp');
+    gulp.copy('manifest.json', '.tmp');
+    gulp.copy('service-worker.js', '.tmp');
+    gulp.copy('sw-precache-config.js', '.tmp');
 });
 
 gulp.task('test-exec', ['copy-temp'], function (onComplete) {
@@ -71,13 +75,15 @@ gulp.task('serve', ['copy-temp'], function (onComplete) {
 
 
 gulp.task('build', ['copy-temp'], function (onComplete) {
-    spawn('polymer', ['build'], { cwd: '.tmp/', stdio: 'inherit' })
-        .on('close', function (){
-            gulp.copyBase('.tmp/build/**/*', 'dist', '.tmp/build');
-            gulp.copyBase('.tmp/package.json', 'dist/bundled', '.tmp');
-            gulp.copyBase('.tmp/package.json', 'dist/unbundled', '.tmp');
-            onComplete();
-        }).on('error', function (error) {
+    setTimeout(function () {
+        spawn('polymer', ['build'], { cwd: '.tmp/', stdio: 'inherit' })
+            .on('close', function (){
+                gulp.copyBase('.tmp/build/**/*', 'dist', '.tmp/build');
+                gulp.copyBase('.tmp/package.json', 'dist/bundled', '.tmp');
+                gulp.copyBase('.tmp/package.json', 'dist/unbundled', '.tmp');
+                onComplete();
+            }).on('error', function (error) {
             onComplete("ERROR");
         });
+    }, 1000);
 });
