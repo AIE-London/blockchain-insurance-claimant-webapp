@@ -74,6 +74,8 @@ gulp.task('build', ['copy-temp'], function (onComplete) {
     spawn('polymer', ['build'], { cwd: '.tmp/', stdio: 'inherit' })
         .on('close', function (){
             gulp.copyBase('.tmp/build/**/*', 'dist', '.tmp/build');
+            gulp.copyBase('.tmp/package.json', 'dist/bundled', '.tmp');
+            gulp.copyBase('.tmp/package.json', 'dist/unbundled', '.tmp');
             onComplete();
         }).on('error', function (error) {
             onComplete("ERROR");

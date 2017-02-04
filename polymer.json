@@ -2,7 +2,6 @@
   "entrypoint": "index.html",
   "shell": "src/my-app.html",
   "fragments": [
-    "src/store/redux-store.html",
     "src/my-view1.html",
     "src/my-view2.html",
     "src/my-view3.html",
@@ -15,7 +14,6 @@
   ],
   "includeDependencies": [
     "manifest.json",
-    "bower_components/webcomponentsjs/webcomponents-lite.min.js",
-    "node_modules/redux/dist/redux.min.js"
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
   ]
 }

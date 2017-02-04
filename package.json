@@ -18,7 +18,7 @@
     "lint": "eslint . --ext js,html --ignore-path .gitignore",
     "test": "npm run lint && gulp clean && gulp test",
     "start": "gulp clean && gulp serve",
-    "build": "gulp clean && gulp build"
+    "clean": "gulp clean"
   },
   "dependencies": {
     "redux": "^3.6.0"
