@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="store/redux-store.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-view1">
@@ -24,14 +24,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class="card">
       <div class="circle">1</div>
       <h1>View One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
+      <p>Count: [[count]]</p>
+      <button on-tap="_increment">Increment</button>
     </div>
   </template>
 
   <script>
+    /* global ReduxBehavior */
     Polymer({
       is: 'my-view1',
+      behaviors: [ReduxBehavior],
+      actions: {
+        increment: function() {
+          return {
+            type: 'INCREMENT_COUNT',
+          };
+        },
+      },
+      properties: {
+        count: {
+          type: Number,
+          statePath: 'count',
+        },
+      },
+      _increment: function() {
+        this.dispatch('increment');
+      },
     });
   </script>
 </dom-module>
