@@ -1,5 +1,5 @@
 {
-  "extends": ["eslint:recommended", "google"],
+  "extends": ["es2015", "eslint:recommended", "google"],
   "env": {
     "browser": true
   },

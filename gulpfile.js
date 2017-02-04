@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 var gulp = require('gulp');
 var spawn = require('child_process').spawn;
 var del = require('del');
@@ -53,7 +55,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('serve', ['copy-temp'], function (onComplete) {
-    spawn('polymer', ['serve'], { cwd: '.tmp/', stdio: 'inherit' })
+    spawn('polymer', ['serve', '--open'], { cwd: '.tmp/', stdio: 'inherit' })
         .on('close', function (){
         }).on('error', function (error) {
         onComplete(error);
