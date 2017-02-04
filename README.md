@@ -2,48 +2,24 @@
 
 [![Build Status](https://travis-ci.org/daniel-cotton/polymer-redux-starter.svg?branch=master)](https://travis-ci.org/daniel-cotton/polymer-redux-starter)
 
-This template offers a starting point, based upon <a href="https://github.com/PolymerElements/polymer-starter-kit">Polymer App Toolbox - Starter Kit</a>. Implementing <a href="https://github.com/tur-nr/polymer-redux">polymer-redux</a>.
+This template offers a starting point, based upon <a href="https://github.com/PolymerElements/polymer-starter-kit">Polymer App Toolbox - Starter Kit (PSK V2)</a>. Implementing <a href="https://github.com/tur-nr/polymer-redux">Polymer-Redux</a>, the PRPL pattern and Babel for ES2015 transpilation.
 
-The PRPL pattern, in a nutshell:
+### Using The Starter
 
-* **Push** components required for the initial route
-* **Render** initial route ASAP
-* **Pre-cache** components for remaining routes
-* **Lazy-load** and progressively upgrade next routes on-demand
-
-### Migrating from Polymer Starter Kit v1?
-
-[Check out our blog post that covers what's changed in PSK2 and how to migrate!](https://www.polymer-project.org/1.0/blog/2016-08-18-polymer-starter-kit-or-polymer-cli.html)
-
-### Quickstart
-
-We've recorded a Polycast to get you up and running with PSK2 fast!
-
-<p align="center">
-  <a href="https://www.youtube.com/watch?v=HgJ0XCyBwzY&list=PLNYkxOF6rcIDdS7HWIC_BYRunV6MHs5xo&index=10">
-    <img src="https://img.youtube.com/vi/HgJ0XCyBwzY/0.jpg" alt="Polymer Starter Kit 2 video">
-  </a>
-</p>
-
-### Setup
-
-##### Prerequisites
-
-First, install [Polymer CLI](https://github.com/Polymer/polymer-cli) using
-[npm](https://www.npmjs.com) (we assume you have pre-installed [node.js](https://nodejs.org)).
-
-    npm install -g polymer-cli
-
-### Start the development server
+#### Start the development server
 
 This command serves the app at `http://localhost:8080` and provides basic URL
-routing for the app:
+routing for the app, in accordance with PSK V2:
 
-    polymer serve --open
+    npm start
 
-### Build
+#### Build
 
-This command performs HTML, CSS, and JS minification on the application
+This command performs a build of the app via Gulp, beginning with a Babel
+transpliation. Following this, the standard polymer-cli build runs which
+performs the below.
+
+Polymer-CLI build runs a HTML, CSS, and JS minification on the application
 dependencies, and generates a service-worker.js file with code to pre-cache the
 dependencies based on the entrypoint and fragments specified in `polymer.json`.
 The minified files are output to the `build/unbundled` folder, and are suitable
@@ -53,26 +29,22 @@ In addition the command also creates a fallback `build/bundled` folder,
 generated using fragment bundling, suitable for serving from non
 H2/push-compatible servers or to clients that do not support H2/Push.
 
-    polymer build
+    npm run build
 
-### Preview the build
+#### Run a clean of temporary and build files
 
-This command serves the minified version of the app at `http://localhost:8080`
-in an unbundled state, as it would be served by a push-compatible server:
+This command removes all existing build and temporary files:
 
-    polymer serve build/unbundled
+    npm run clean
 
-This command serves the minified version of the app at `http://localhost:8080`
-generated using fragment bundling:
-
-    polymer serve build/bundled
-
-### Run tests
+#### Run tests
 
 This command will run [Web Component Tester](https://github.com/Polymer/web-component-tester)
-against the browsers currently installed on your machine:
+against the browsers currently installed on your machine and also run linting.
 
-    polymer test
+Note: The testing and will run POST Babel transpilation:
+
+    npm test
 
 ### Adding a new view
 
@@ -82,3 +54,15 @@ application. Each new demand-loaded fragment should be added to the list of
 `fragments` in the included `polymer.json` file. This will ensure those
 components and their dependencies are added to the list of pre-cached components
 and will be included in the `bundled` build.
+
+
+## FAQ
+
+### What is the PRPL pattern?
+
+The PRPL pattern, in a nutshell:
+
+* **Push** components required for the initial route
+* **Render** initial route ASAP
+* **Pre-cache** components for remaining routes
+* **Lazy-load** and progressively upgrade next routes on-demand
