@@ -35,6 +35,7 @@ gulp.task('copy-temp', ['transpile-es2015'], function () {
     gulp.copy('index.html', '.tmp');
     gulp.copy('bower.json', '.tmp');
     gulp.copy('package.json', '.tmp');
+    gulp.copy('polymer.json', '.tmp');
 });
 
 gulp.task('test-exec', ['copy-temp'], function (onComplete) {
@@ -55,7 +56,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('serve', ['copy-temp'], function (onComplete) {
-    spawn('polymer', ['serve', '--open'], { cwd: '.tmp/', stdio: 'inherit' })
+    spawn('polymer', ['serve', '--open', '.'], { cwd: '.tmp/', stdio: 'inherit' })
         .on('close', function (){
         }).on('error', function (error) {
         onComplete(error);
