@@ -8,6 +8,16 @@ var gulpif = require('gulp-if');
 var sourcemaps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
 
+var isWin = /^win/.test(process.platform);
+
+gulp.spawnCmd = function (command) {
+    if (isWin){
+        return command + ".cmd";
+    } else {
+        return command;
+    }
+};
+
 gulp.copy = function(src, dest){
     return gulp.src(src, {base:"."})
         .pipe(gulp.dest(dest));
@@ -47,7 +57,7 @@ gulp.task('copy-temp', ['transpile-es2015'], function () {
 });
 
 gulp.task('test-exec', ['copy-temp'], function (onComplete) {
-    spawn('polymer', ['test'], { cwd: '.tmp/', stdio: 'inherit' })
+    spawn(gulp.spawnCmd('polymer'), ['test'], { cwd: '.tmp/', stdio: 'inherit' })
         .on('close', function (){
             onComplete(null);
         }).on('error', function (error) {
@@ -65,7 +75,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('serve', ['copy-temp'], function (onComplete) {
-    spawn('polymer', ['serve', '--open', '.'], { cwd: '.tmp/', stdio: 'inherit' })
+    spawn(gulp.spawnCmd('polymer'), ['serve', '--open', '.'], { cwd: '.tmp/', stdio: 'inherit' })
         .on('close', function (){
         }).on('error', function (error) {
         onComplete(error);
@@ -76,7 +86,7 @@ gulp.task('serve', ['copy-temp'], function (onComplete) {
 
 gulp.task('build', ['copy-temp'], function (onComplete) {
     setTimeout(function () {
-        spawn('polymer', ['build'], { cwd: '.tmp/', stdio: 'inherit' })
+        spawn(gulp.spawnCmd('polymer'), ['build'], { cwd: '.tmp/', stdio: 'inherit' })
             .on('close', function (){
                 gulp.copyBase('.tmp/build/**/*', 'dist', '.tmp/build');
                 gulp.copyBase('.tmp/package.json', 'dist/bundled', '.tmp');
