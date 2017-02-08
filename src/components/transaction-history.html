@@ -1,0 +1,49 @@
+<link rel="import" href="../store/redux-store.html">
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
+
+<dom-module id="transaction-history">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+            }
+            .claim_created {
+                background: white;
+            }
+            .claim_approved {
+                background: green;
+            }
+            .claim_rejected_due_to_dabbing {
+                background: red;
+            }
+        </style>
+        <iron-list items="[[transactions]]">
+            <template>
+                <paper-item class$="[[item.stage]]">
+                    <paper-item-body two-line>
+                        <div>[[item.id]]</div>
+                        <div secondary>[[item.claimant]]</div>
+                    </paper-item-body>
+                </paper-item>
+            </template>
+        </iron-list>
+
+    </template>
+
+    <script>
+        /* global ReduxBehavior */
+        Polymer({
+            is: 'transaction-history',
+            behaviors: [ReduxBehavior],
+            properties: {
+                transactions: {
+                    type: Array,
+                    statePath: 'transactions',
+                },
+            }
+        });
+    </script>
+</dom-module>

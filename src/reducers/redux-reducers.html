@@ -2,6 +2,28 @@
     /* eslint no-unused-vars: "off" */
     const initialState = {
         count: 0,
+        transactions: [
+            {
+                "id": 83214321132,
+                "claimant": "Dan",
+                "stage": "claim_created"
+            },
+            {
+                "id": 123123124123,
+                "claimant": "Tom",
+                "stage": "claim_created"
+            },
+            {
+                "id": 83214321132,
+                "claimant": "Dan",
+                "stage": "claim_approved"
+            },
+            {
+                "id": 1234123213123,
+                "claimant": "Caner",
+                "stage": "claim_rejected_due_to_dabbing"
+            },
+        ],
     };
     let reducers = (state, action) => {
         if (!state) {
