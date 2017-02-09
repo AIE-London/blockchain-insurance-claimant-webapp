@@ -3,7 +3,6 @@
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
-<link rel="import" href="../../bower_components/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html">
 <dom-module id="transaction-history">
     <template>
         <style include="shared-styles">
@@ -30,11 +29,6 @@
                 </paper-item>
             </template>
         </iron-list>
-        <app-indexeddb-mirror
-        key="transactions"
-        data="{{reduxTransactions}}"
-        persisted-data="{{transactions}}">
-        </app-indexeddb-mirror>
     </template>
 
     <script>
@@ -51,7 +45,7 @@
                 },
             },
             properties: {
-                reduxTransactions: {
+                transactions: {
                     type: Array,
                     statePath: 'transactions',
                 },
