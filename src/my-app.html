@@ -19,6 +19,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="./store/redux-store.html">
+
 <link rel="import" href="my-icons.html">
 <dom-module id="my-app">
   <template>
@@ -101,7 +103,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     Polymer({
       is: 'my-app',
-
+      behaviors: [ReduxBehavior],
       properties: {
         page: {
           type: String,
@@ -109,7 +111,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           observer: '_pageChanged',
         },
       },
-
+      actions: {
+        restore: function (initialState) {
+          return {
+            type: 'RESTORE_CACHED',
+            cached: initialState
+          }
+        }
+      },
+      ready: function (){
+        var _this = this;
+        offline.restore(function (initialState){
+          _this.dispatch('restore', initialState);
+        });
+      },
       observers: [
         '_routePageChanged(routeData.page)',
       ],
