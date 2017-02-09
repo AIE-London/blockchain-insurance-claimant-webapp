@@ -18,7 +18,8 @@
     "polymer": "Polymer/polymer#^1.6.0",
     "polymer-redux": "^0.3.1",
     "iron-list": "PolymerElements/iron-list#^1.4.0",
-    "paper-item": "PolymerElements/paper-item#^1.2.1"
+    "paper-item": "PolymerElements/paper-item#^1.2.1",
+    "app-storage": "PolymerElements/app-storage#^0.9.8"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
