@@ -3,21 +3,21 @@
 <link rel="import" href="../../bower_components/iron-list/iron-list.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
-
+<link rel="import" href="../../bower_components/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html">
 <dom-module id="transaction-history">
     <template>
         <style include="shared-styles">
             :host {
                 display: block;
             }
-            .claim_created {
+            paper-item {
                 background: white;
             }
             .claim_approved {
-                background: green;
+                color: green;
             }
-            .claim_rejected_due_to_dabbing {
-                background: red;
+            .claim_rejected {
+                color: red;
             }
         </style>
         <iron-list items="[[transactions]]">
@@ -30,7 +30,11 @@
                 </paper-item>
             </template>
         </iron-list>
-
+        <app-indexeddb-mirror
+        key="transactions"
+        data="{{reduxTransactions}}"
+        persisted-data="{{transactions}}">
+        </app-indexeddb-mirror>
     </template>
 
     <script>
@@ -38,11 +42,29 @@
         Polymer({
             is: 'transaction-history',
             behaviors: [ReduxBehavior],
+            actions: {
+                add_transactions: function(data) {
+                    return {
+                        type: 'ADD_TRANSACTIONS',
+                        transactions: data
+                    };
+                },
+            },
             properties: {
-                transactions: {
+                reduxTransactions: {
                     type: Array,
                     statePath: 'transactions',
                 },
+            },
+            ready: function () {
+                let _this = this;
+                fetch('https://demo7632555.mockable.io/test/transactions/')
+                        .then(function (response) {
+                            response.json().then(function (body){
+                                _this.dispatch('add_transactions', body);
+                                console.log(body);
+                            });
+                });
             }
         });
     </script>

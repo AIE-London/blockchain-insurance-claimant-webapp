@@ -2,28 +2,7 @@
     /* eslint no-unused-vars: "off" */
     const initialState = {
         count: 0,
-        transactions: [
-            {
-                "id": 83214321132,
-                "claimant": "Dan",
-                "stage": "claim_created"
-            },
-            {
-                "id": 123123124123,
-                "claimant": "Tom",
-                "stage": "claim_created"
-            },
-            {
-                "id": 83214321132,
-                "claimant": "Dan",
-                "stage": "claim_approved"
-            },
-            {
-                "id": 1234123213123,
-                "claimant": "Caner",
-                "stage": "claim_rejected_due_to_dabbing"
-            },
-        ],
+        transactions: [],
     };
     let reducers = (state, action) => {
         if (!state) {
@@ -36,6 +15,11 @@
             case 'INCREMENT_COUNT':
                 return Object.assign({}, state, {
                     count: state.count + 1,
+                });
+            case 'ADD_TRANSACTIONS':
+                let transArray = state.transactions;
+                return Object.assign({}, state, {
+                    transactions: transArray.concat(action.transactions),
                 });
             default:
                 return state;
