@@ -10,23 +10,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="./store/redux-store.html">
 <link rel="import" href="./shared-styles.html">
+<link rel="import" href="./components/login-screen.html">
 
 <dom-module id="my-view2">
   <template>
     <style include="shared-styles">
       :host {
-        display: block;
+        display: flex;
 
-        padding: 10px;
+          align-items: center;
+          width: 100%;
       }
     </style>
 
-    <div class="card">
-      <div class="circle">2</div>
-      <h1>View 2</h1>
-      <p>You can also increment the count here. Look at the running count: [[count]]</p>
-      <button on-tap="_increment">Increment</button>
-    </div>
+
+    <login-screen></login-screen>
   </template>
 
   <script>
