@@ -10,6 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="./store/redux-store.html">
 <link rel="import" href="./shared-styles.html">
+<link rel="import" href="./components/transaction-history.html">
 
 <dom-module id="my-view2">
   <template>
@@ -21,12 +22,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <div class="card">
-      <div class="circle">2</div>
-      <h1>View 2</h1>
-      <p>You can also increment the count here. Look at the running count: [[count]]</p>
-      <button on-tap="_increment">Increment</button>
-    </div>
+    <h1 class="claim_created">Transaction History</h1>
+    <transaction-history></transaction-history>
   </template>
 
   <script>
@@ -48,7 +45,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
       },
       _increment: function() {
-        this.dispatch('increment');
       },
     });
   </script>
