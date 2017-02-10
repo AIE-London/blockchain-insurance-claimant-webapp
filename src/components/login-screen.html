@@ -1,0 +1,50 @@
+<link rel="import" href="../store/redux-store.html">
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+
+<dom-module id="login-screen">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+
+                padding: 10px;
+            }
+        </style>
+
+        <paper-card id="login_form" >
+            <div class="card-content">
+                <h2>Please login </h2>
+
+                <paper-input label="Username"> </paper-input>
+                <paper-input label="Password" type = "password"> </paper-input>
+            </div>
+            <div class="card-actions">
+                <paper-button dialog-dismiss>Cancel</paper-button>
+                <paper-button dialog-confirm autofocus>OK</paper-button>
+            </div>
+        </paper-card>
+
+
+    </template>
+
+    <script>
+        /* global ReduxBehavior */
+        Polymer({
+            is: 'login-screen',
+            behaviors: [ReduxBehavior],
+            properties: {
+                transactions: {
+                    type: Array,
+                    statePath: 'transactions',
+                },
+            },
+            ready: function () {
+                this.$.login_form.open();
+            }
+        });
+    </script>
+</dom-module>
