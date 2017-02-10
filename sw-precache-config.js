@@ -12,9 +12,10 @@
 
 module.exports = {
   staticFileGlobs: [
+    '/node_modules/redux/dist/redux.min.js',
     '/index.html',
     '/manifest.json',
-    '/bower_components/webcomponentsjs/webcomponents-lite.min.js',
+    '/bower_components/webcomponentsjs/webcomponents-lite.min.js'
   ],
   navigateFallback: 'index.html',
 };
