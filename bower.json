@@ -26,7 +26,8 @@
     "paper-card": "PolymerElements/paper-card#^1.1.4",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.5.0",
     "paper-date-picker": "bendavis78/paper-date-picker#^1.2.0",
-    "paper-listbox": "PolymerElements/paper-listbox#^1.1.2"
+    "paper-listbox": "PolymerElements/paper-listbox#^1.1.2",
+    "polymerfire": "firebase/polymerfire#^0.10.3"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
