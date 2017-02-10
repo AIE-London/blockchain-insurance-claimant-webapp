@@ -3,7 +3,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
-
+<link rel="import" href="../behaviors/claimant-api-behavior.html">
 
 <dom-module id="login-screen">
     <template>
@@ -18,13 +18,11 @@
         <paper-card id="login_form" >
             <div class="card-content">
                 <h2>Please login </h2>
-
-                <paper-input label="Username"> </paper-input>
-                <paper-input label="Password" type = "password"> </paper-input>
+                <paper-input label="Username" value="{{username}}"> </paper-input>
+                <paper-input label="Password" type="password" value="{{password}}"> </paper-input>
             </div>
             <div class="card-actions">
-                <paper-button dialog-dismiss>Cancel</paper-button>
-                <paper-button dialog-confirm autofocus>OK</paper-button>
+                <paper-button on-tap="_logIn">Login</paper-button>
             </div>
         </paper-card>
 
@@ -35,7 +33,7 @@
         /* global ReduxBehavior */
         Polymer({
             is: 'login-screen',
-            behaviors: [ReduxBehavior],
+            behaviors: [ReduxBehavior, ClaimantAPIBehavior],
             properties: {
                 transactions: {
                     type: Array,
@@ -43,6 +41,13 @@
                 },
             },
             ready: function () {
+            },
+            _logIn: function (){
+                this._claimantApi().login(this.username, this.password).then(function (token) {
+                    console.log(token);
+                }, function (error) {
+                   console.error(error);
+                });
             }
         });
     </script>

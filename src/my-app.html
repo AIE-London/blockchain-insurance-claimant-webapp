@@ -19,6 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="./store/redux-store.html">
 
 <link rel="import" href="my-icons.html">
@@ -98,6 +99,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
+    <firebase-app auth-domain="blockchain-insurance.firebaseapp.com"
+                  database-url="https://blockchain-insurance.firebaseio.com"
+                  messaging-sender-id="967311218464"
+                  api-key="AIzaSyBI21XSeOdlW8iGAvELbAyQkY2bUKnbBG8">
+    </firebase-app>
+    <firebase-messaging id="messaging"
+                        token="{{token}}"
+                        on-message="handleMessage">
+    </firebase-messaging>
+
   </template>
 
   <script>
@@ -110,6 +121,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           reflectToAttribute: true,
           observer: '_pageChanged',
         },
+        token: {
+          type: String,
+          observer: '_tokenChanged'
+        }
       },
       actions: {
         restore: function (initialState) {
@@ -119,11 +134,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         }
       },
+      handleMessage: function (message){
+        console.log(message);
+      },
       ready: function (){
         var _this = this;
         offline.restore(function (initialState){
           _this.dispatch('restore', initialState);
         });
+        this.$.messaging.requestPermission().then(function() {
+          // permission was granted
+
+        }, function(err) {
+          // permission was denied
+        });
+
+      },
+      _tokenChanged: function (){
+        console.log(this.token);
       },
       observers: [
         '_routePageChanged(routeData.page)',

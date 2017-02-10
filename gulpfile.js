@@ -52,6 +52,7 @@ gulp.task('copy-temp', ['transpile-es2015'], function () {
     gulp.copy('polymer.json', '.tmp');
     gulp.copy('manifest.json', '.tmp');
     gulp.copy('service-worker.js', '.tmp');
+    gulp.copy('firebase-messaging-sw.js', '.tmp');
     gulp.copy('sw-precache-config.js', '.tmp');
     gulp.copy('images/**/*', '.tmp');
 });
