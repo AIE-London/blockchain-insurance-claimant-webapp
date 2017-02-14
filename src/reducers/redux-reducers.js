@@ -29,6 +29,12 @@ var reducers = function (state, action) {
                 transactions: action.transactions,
             });
             break;
+        case 'SET_TOKEN':
+            newState = Object.assign({}, state, {
+                token: action.token ,
+            });
+            break;
+
         default:
             newState = state;
             break;
