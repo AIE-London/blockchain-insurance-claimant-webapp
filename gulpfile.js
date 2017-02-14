@@ -52,6 +52,7 @@ gulp.task('copy-temp', ['transpile-es2015'], function () {
     gulp.copy('polymer.json', '.tmp');
     gulp.copy('manifest.json', '.tmp');
     gulp.copy('service-worker.js', '.tmp');
+    gulp.copy('firebase-messaging-sw.js', '.tmp');
     gulp.copy('sw-precache-config.js', '.tmp');
     gulp.copy('images/**/*', '.tmp');
 });
@@ -86,14 +87,16 @@ gulp.task('serve', ['copy-temp'], function (onComplete) {
 
 gulp.task('build', ['copy-temp'], function (onComplete) {
     setTimeout(function () {
-        spawn(gulp.spawnCmd('polymer'), ['build'], { cwd: '.tmp/', stdio: 'inherit' })
+        spawn(gulp.spawnCmd('polymer'), ['build', '--sw-precache-config', './sw-precache-config.js'], { cwd: '.tmp/', stdio: 'inherit' })
             .on('close', function (){
                 gulp.copyBase('.tmp/build/**/*', 'dist', '.tmp/build');
                 gulp.copyBase('.tmp/package.json', 'dist/bundled', '.tmp');
                 gulp.copyBase('.tmp/package.json', 'dist/unbundled', '.tmp');
+                gulp.copyBase('.tmp/manifest.json', 'dist/bundled', '.tmp');
+                gulp.copyBase('.tmp/manifest.json', 'dist/unbundled', '.tmp');
                 onComplete();
             }).on('error', function (error) {
-            onComplete("ERROR");
+                onComplete("ERROR:" + error);
         });
     }, 1000);
 });

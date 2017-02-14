@@ -10,21 +10,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="./store/redux-store.html">
 <link rel="import" href="./shared-styles.html">
-<link rel="import" href="./components/login-screen.html">
+<link rel="import" href="./components/transaction-history.html">
 
 <dom-module id="my-view2">
   <template>
     <style include="shared-styles">
       :host {
-        display: flex;
+        display: block;
 
-          align-items: center;
-          width: 100%;
+        padding: 10px;
       }
     </style>
 
-
-    <login-screen></login-screen>
+    <h1 class="claim_created">Transaction History</h1>
+    <transaction-history></transaction-history>
   </template>
 
   <script>
@@ -40,13 +39,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
       },
       properties: {
-        count: {
-          type: Number,
-          statePath: 'count',
+        token: {
+          type: String,
+          statePath: 'token',
         },
       },
       _increment: function() {
-        this.dispatch('increment');
       },
     });
   </script>
