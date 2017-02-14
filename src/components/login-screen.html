@@ -34,6 +34,14 @@
         Polymer({
             is: 'login-screen',
             behaviors: [ReduxBehavior, ClaimantAPIBehavior],
+            actions: {
+                addToken: function(token) {
+                    return {
+                        type: 'SET_TOKEN',
+                        token:token,
+                    };
+                },
+            },
             properties: {
                 transactions: {
                     type: Array,
@@ -43,8 +51,9 @@
             ready: function () {
             },
             _logIn: function (){
+                var _this = this
                 this._claimantApi().login(this.username, this.password).then(function (token) {
-                    console.log(token);
+                   _this.dispatch('addToken',token);
                 }, function (error) {
                    console.error(error);
                 });
