@@ -21,15 +21,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-      <h1 class="claim_created">Welcome</h1>
+
+    <template is="dom-if" if="[[_status]]">
+      <div>My Lists</div>
+      <list-list></list-list>
+    </template>
+
+    <template is="dom-if" if="[[!_status]]">
       <login-screen></login-screen>
-
-      <template is="dom-if" if="{{false}}"
-          <basic-ui> </basic-ui>
-      </template>
-      <basic-ui> </basic-ui>
-
+    </template>
   </template>
+
 
   <script>
     /* global ReduxBehavior */
@@ -43,12 +45,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           };
         },
       },
+
       properties: {
         count: {
           type: Number,
           statePath: 'count',
         },
+          _status: {
+              type: Boolean,
+              value: true,
+              statePath: 'loggedIn',
+          },
       },
+
+        _loggedIn: function (status) {
+            return status;
+        },
+        _loggedOut: function (status) {
+            return status;
+        },
       _increment: function() {
         this.dispatch('increment');
       },
