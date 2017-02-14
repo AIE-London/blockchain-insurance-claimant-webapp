@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./shared-styles.html">
 <link rel="import" href="./components/basic-ui.html">
 <link rel="import" href="./components/login-screen.html">
+<link rel="import" href="./components/transaction-history.html">
 
 <dom-module id="my-view1">
   <template>
@@ -23,8 +24,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
     <template is="dom-if" if="[[_status]]">
-      <div>My Lists</div>
-      <list-list></list-list>
+      <h1>Welcome, here are your recent transactions</h1>
+      <transaction-history></transaction-history>
     </template>
 
     <template is="dom-if" if="[[!_status]]">
