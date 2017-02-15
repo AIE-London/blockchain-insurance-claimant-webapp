@@ -8,8 +8,9 @@
         _claim: function (){
             let _endpoint = this._endpoint;
             return {
-                createClaim: function (relatedPolicy, description, date, type) {
+                createClaim: function (token,relatedPolicy, description, date, type) {
                     let headers = new Headers();
+                    headers.append("authorization", "bearer " + token);
                     headers.append("Content-Type", "application/json");
                     return fetch(_endpoint + 'claimant/DanCotton/claim',{
                         method: 'POST',
@@ -18,7 +19,7 @@
                             relatedPolicy: relatedPolicy,
                             description: description,
                             incidentDate: date,
-                            incidentType: type
+                            type: type
 
                         })
                     }).then(response => {
