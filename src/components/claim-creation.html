@@ -33,11 +33,13 @@
                 <h2>Claim  data</h2>
                 <paper-dropdown-menu label="Claim type">
                     <paper-listbox id = "listBox" class="dropdown-content" selected = "{{type}}">
-                        <paper-item>Single party</paper-item>
-                        <paper-item>Multiple party</paper-item>
+                        <template is="dom-repeat" items="{{typeOptions}}">
+                            <paper-item>{{item}}</paper-item>
+                        </template>
 
                     </paper-listbox>
                 </paper-dropdown-menu>
+
                 <paper-textarea label="Description of incident" value = "{{description}}"></paper-textarea>
 
                 <h4>Incident date</h4>
@@ -58,7 +60,6 @@
             </div>
         </paper-card>
 
-
     </template>
 
     <script>
@@ -77,11 +78,13 @@
                 },
                 typeOptions: {
                     type: Array,
-                    value: ['Single Party', 'Multiple Party'],
+                    value: ['Single Party',
+                            'Multiple Party']
                 }
             },
 
             ready: function () {
+
             },
             _processDate: function(date) {
                 return date.toISOString().substring(0, 10);
