@@ -37,6 +37,11 @@ var reducers = function (state, action) {
             });
             break;
 
+        case 'LOG_OUT':
+            newState = Object.assign({},
+            initialState );
+            break;
+
         default:
             newState = state;
             break;
