@@ -2,7 +2,8 @@
 /* global offline */
 const initialState = {
     count: 0,
-    transactions: []
+    transactions: [],
+    loggedIn: false
 };
 var reducers = function (state, action) {
     var save = true;
@@ -32,7 +33,13 @@ var reducers = function (state, action) {
         case 'SET_TOKEN':
             newState = Object.assign({}, state, {
                 token: action.token ,
+                loggedIn: true,
             });
+            break;
+
+        case 'LOG_OUT':
+            newState = Object.assign({},
+            initialState );
             break;
 
         default:
