@@ -1,0 +1,62 @@
+<link rel="import" href="../store/redux-store.html">
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../behaviors/claimant-api-behavior.html">
+<link rel="import" href="status-bar.html">
+
+<dom-module id="claim-display">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+
+                padding: 10px;
+            }
+        </style>
+
+        <paper-card id="claim_display" >
+            <div class="card-content">
+                <h2>Claim Information</h2>
+                <div>Claim Type: Expensive</div>
+                <div>Claim Description: I crashed into a tree</div>
+                <div>Related Policy: Policy 1</div>
+                <div>Incident Date: 09/03/2016</div>
+                <div>Incident Type: Single Party</div>
+                <div>Status:</div>
+                <status-bar></status-bar>
+
+            </div>
+            <!-- <div class="card-actions">
+                <paper-button on-tap="_logIn">Login</paper-button>
+            </div> -->
+        </paper-card>
+
+
+    </template>
+
+    <script>
+        /* global ReduxBehavior */
+        Polymer({
+            is: 'claim-display',
+            behaviors: [ReduxBehavior,],
+            actions: {
+                addToken: function(token) {
+                    return {
+                        type: 'SET_TOKEN',
+                        token:token,
+                    };
+                },
+            },
+            properties: {
+                transactions: {
+                    type: Array,
+                    statePath: 'transactions',
+                },
+            },
+            ready: function () {
+            }
+        });
+    </script>
+</dom-module>

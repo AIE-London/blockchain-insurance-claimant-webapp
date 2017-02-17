@@ -1,0 +1,135 @@
+<link rel="import" href="../store/redux-store.html">
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../behaviors/claimant-api-behavior.html">
+<link rel="import" href="../icons/myIcons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+
+<dom-module id="status-bar">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+
+                padding: 10px;
+            }
+
+            .flex-container {
+                display: flex;
+
+                justify-content: space-around;
+            }
+
+            .active {
+                background-color: lawngreen;
+            }
+
+            .inactive {
+                background-color: lightgrey;
+            }
+
+            .circleBase {
+                border-radius: 50%;
+                width:50px;
+                height:50px;
+                border:2px solid#000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .inner {
+                width: 50%;
+                margin: 0 auto;
+            }
+            .outer {
+                margin: 10px;
+            }
+
+        </style>
+
+        <div class="flex-container">
+            <!-- <div style = "width:70px; height:70px; border:2px solid#000" class$ = "[[_getStyle(currentClaim, 'Claim Raised')]]"> Claim Raised</div>
+            <div style = "width:70px; height:70px; border:2px solid#000" class$ = "[[_getStyle(currentClaim, 'Car Inspected')]]"> Car Inspected</div>
+            <div style = "width:70px; height:70px; border:2px solid#000" class$ = "[[_getStyle(currentClaim, 'Value Agreed')]]"> Value Agreed</div>
+            <div style = "width:70px; height:70px; border:2px solid#000" class$ = "[[_getStyle(currentClaim, 'Payment Made')]]"> Payment Made</div> -->
+
+
+            <div class = "outer">
+                <div  class$ = "[[_getStyle(currentClaim, 'Claim Raised')]]">
+                    <iron-icon icon="myIcons:check-circle"></iron-icon>
+                </div>
+                <p>Claim Raised</p>
+            </div>
+
+            <div class = "outer">
+                <div  class$ = "[[_getStyle(currentClaim, 'Car Inspected')]]">
+                <iron-icon icon="myIcons:directions-car"></iron-icon>
+                </div>
+                <p>Car Inspected</p>
+            </div>
+
+            <div class = "outer">
+                <div class$ = "[[_getStyle(currentClaim, 'Value Agreed')]]">
+                <iron-icon icon="myIcons:group"></iron-icon>
+                </div>
+                <p>Value Agreed</p>
+            </div>
+
+            <div class = "outer">
+                <div class$ = "[[_getStyle(currentClaim, 'Payment Made')]]">
+                    <iron-icon icon="myIcons:local-atm"></iron-icon>
+                </div>
+                <p>Payment Made</p>
+
+            </div>
+
+        </div>
+
+    </template>
+
+    <script>
+        /* global ReduxBehavior */
+        Polymer({
+            is: 'status-bar',
+            behaviors: [ReduxBehavior],
+            actions: {
+                addToken: function(token) {
+                    return {
+                        type: 'SET_TOKEN',
+                        token:token,
+                    };
+                },
+            },
+            properties: {
+                transactions: {
+                    type: Array,
+                    statePath: 'transactions',
+                },
+
+                currentClaim: {
+                    type: Object,
+                    value: {
+                        "claimType": "Type 1",
+                        "claimDescription": "Description of claim",
+                        "relatedPolicy": "Policy 1",
+                        "incidentDate": "2106-01-01",
+                        "incidentType": "Single Party",
+                        "status": "Car Inspected"
+                    }
+                }
+            },
+            ready: function () {
+            },
+
+            _getStyle: function(claim, status) {
+                if (claim.status === status) {
+                    return "active circleBase inner";
+                } else {
+                    return "inactive circleBase inner";
+                }
+            }
+        });
+    </script>
+</dom-module>
