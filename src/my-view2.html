@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./shared-styles.html">
 <link rel="import" href="./components/transaction-history.html">
 
+
 <dom-module id="my-view2">
   <template>
     <style include="shared-styles">
@@ -25,6 +26,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <h1 class="claim_created">Transaction History</h1>
     <transaction-history></transaction-history>
   </template>
+
+
 
   <script>
     /* global ReduxBehavior */
@@ -44,7 +47,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           statePath: 'token',
         },
       },
+
       _increment: function() {
+
       },
     });
   </script>

@@ -12,46 +12,78 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./shared-styles.html">
 <link rel="import" href="./components/basic-ui.html">
 <link rel="import" href="./components/login-screen.html">
+<link rel="import" href="./components/transaction-history.html">
+<link rel="import" href="./behaviors/claimant-api-behavior.html">
 
 <dom-module id="my-view1">
   <template>
     <style include="shared-styles">
       :host {
         display: block;
+
+        padding: 10px;
       }
     </style>
 
-      <h1 class="claim_created">Welcome</h1>
-      <login-screen></login-screen>
 
-      <template is="dom-if" if="{{false}}"
-          <basic-ui> </basic-ui>
+    <template is="dom-if" if="[[_status]]">
+      <h1>Welcome, here are your recent transactions</h1>
+      <transaction-history></transaction-history>
+
+
+      <paper-card>
+      <div class="card-actions">
+        <paper-button on-tap="_logOut">Log Out</paper-button>
+      </div>
+      </paper-card>
       </template>
-      <basic-ui> </basic-ui>
 
+    <template is="dom-if" if="[[!_status]]">
+      <login-screen></login-screen>
+    </template>
   </template>
+
 
   <script>
     /* global ReduxBehavior */
     Polymer({
-      is: 'my-view1',
-      behaviors: [ReduxBehavior],
-      actions: {
-        increment: function() {
-          return {
-            type: 'INCREMENT_COUNT',
-          };
+        is: 'my-view1',
+        behaviors: [ReduxBehavior, ClaimantAPIBehavior],
+        actions: {
+            logOut: function() {
+                return {
+                    type: 'LOG_OUT',
+
+                };
+            },
         },
-      },
-      properties: {
-        count: {
-          type: Number,
-          statePath: 'count',
+
+        properties: {
+            count: {
+                type: Number,
+                statePath: 'count',
+            },
+            _status: {
+                type: Boolean,
+                value: true,
+                statePath: 'loggedIn',
+            },
         },
-      },
-      _increment: function() {
-        this.dispatch('increment');
-      },
+        _loggedIn: function (status) {
+            return status;
+        },
+        _loggedOut: function (status) {
+            return status;
+        },
+        _increment: function() {
+            this.dispatch('increment');
+        },
+
+        ready: function () {
+        },
+        _logOut: function (){
+            this.dispatch('logOut');
+        }
     });
   </script>
 </dom-module>
