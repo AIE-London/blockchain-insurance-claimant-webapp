@@ -14,6 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./components/login-screen.html">
 <link rel="import" href="./components/transaction-history.html">
 <link rel="import" href="./behaviors/claimant-api-behavior.html">
+<link rel="import" href="./components/claim-display.html">
 
 <dom-module id="my-view1">
   <template>
@@ -29,6 +30,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template is="dom-if" if="[[_status]]">
       <h1>Welcome, here are your recent transactions</h1>
       <transaction-history></transaction-history>
+
 
 
       <paper-card>
