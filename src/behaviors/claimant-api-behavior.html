@@ -27,9 +27,10 @@
                     });
                 },
 
-                getClaim: function (claimId) {
+                getClaim: function (claimId,token) {
                     let headers = new Headers();
                     headers.append("Content-Type", "application/json");
+                    headers.append("authorization", "bearer " + token);
                     return fetch(_endpoint + '/claim/'+ claimId,{
                         method: 'GET',
                         headers: headers,
