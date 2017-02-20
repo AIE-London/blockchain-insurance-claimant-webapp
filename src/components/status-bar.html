@@ -119,7 +119,7 @@
             },
 
             _getStyle: function(claim, status) {
-                if (claim.status === status) {
+                if (claim !== null && claim.status === status) {
                     return "active circleBase inner";
                 } else {
                     return "inactive circleBase inner";

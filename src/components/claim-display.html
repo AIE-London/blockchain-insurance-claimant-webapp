@@ -19,11 +19,11 @@
         <paper-card id="claim_display" >
             <div class="card-content">
                 <h2>Claim Information</h2>
-                <div>Claim Type: Expensive</div>
+                <div>Claim Type: [[claim.claimType]]</div>
                 <div>Claim Description: [[claim.claimDescription]]</div>
-                <div>Related Policy: Policy 1</div>
-                <div>Incident Date: 09/03/2016</div>
-                <div>Incident Type: Single Party</div>
+                <div>Related Policy: [[claim.relatedPolicy]]</div>
+                <div>Incident Date: [[claim.incidentDate]]</div>
+                <div>Incident Type: [[claim.incidentType]]</div>
                 <div>Status:</div>
                 <status-bar current-claim="[[claim]]"></status-bar>
 
@@ -60,7 +60,11 @@
                 claim: {
                     type: Object,
                     statePath: function (state) {
-                        return state.claims["3"];
+                        if (state.claims) {
+                            return state.claims["3"];
+                        } else {
+                            return null;
+                        }
                     }
                 }
             },
