@@ -21,6 +21,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="./store/redux-store.html">
+<link rel="import" href="../bower_components/socket-io/socket-io.html">
 
 <link rel="import" href="my-icons.html">
 <dom-module id="my-app">
@@ -58,7 +59,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: bold;
       }
     </style>
-
+    <socket-io id="socket" endpoint="https://blockchain-insurance.eu-gb.mybluemix.net" events="[[events]]"></socket-io>
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
@@ -148,7 +149,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }, function(err) {
           // permission was denied
         });
-
+          this.$.socket.connect();
       },
       _tokenChanged: function (){
         console.log(this.token);
