@@ -38,7 +38,7 @@
         /* global ReduxBehavior */
         Polymer({
             is: 'claim-display',
-            behaviors: [ReduxBehavior,],
+            behaviors: [ReduxBehavior,ClaimantAPIBehavior],
             actions: {
                 addToken: function(token) {
                     return {
@@ -52,8 +52,15 @@
                     type: Array,
                     statePath: 'transactions',
                 },
+                token: {
+                    type: String,
+                    statePath: 'token',
+                },
+
             },
             ready: function () {
+                this._claimantApi().getClaim( "3" ,this.token);
+
             }
         });
     </script>

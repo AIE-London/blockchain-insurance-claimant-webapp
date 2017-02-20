@@ -10,6 +10,7 @@
         },
         _claimantApi: function (){
             let _endpoint = this._endpoint;
+            let _mockEndpoint = this._mockEndpoint;
             return {
                 login: function (username, password) {
                     let headers = new Headers();
@@ -31,7 +32,7 @@
                     let headers = new Headers();
                     headers.append("Content-Type", "application/json");
                     headers.append("authorization", "bearer " + token);
-                    return fetch(_endpoint + '/claim/'+ claimId,{
+                    return fetch(_mockEndpoint + '/claim/'+ claimId,{
                         method: 'GET',
                         headers: headers,
                     }).then(function (response) {
