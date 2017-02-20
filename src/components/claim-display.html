@@ -49,9 +49,9 @@
                 },
             },
             properties: {
-                transactions: {
-                    type: Array,
-                    statePath: 'transactions',
+                claimId: {
+                    type: String,
+                    required: true
                 },
                 token: {
                     type: String,
@@ -61,7 +61,7 @@
                     type: Object,
                     statePath: function (state) {
                         if (state.claims) {
-                            return state.claims["3"];
+                            return state.claims[this.claimId];
                         } else {
                             return null;
                         }
@@ -70,8 +70,8 @@
             },
             ready: function () {
                 var _this = this;
-                this._claimantApi().getClaim( "3" ,this.token).then(function (claimValue) {
-                   _this.dispatch('addClaim', "3", claimValue);
+                this._claimantApi().getClaim(this.claimId, this.token).then(function (claimValue) {
+                   _this.dispatch('addClaim', _this.claimId, claimValue);
                 });
 
             }
