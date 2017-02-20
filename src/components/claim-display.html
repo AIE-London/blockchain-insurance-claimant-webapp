@@ -20,12 +20,12 @@
             <div class="card-content">
                 <h2>Claim Information</h2>
                 <div>Claim Type: Expensive</div>
-                <div>Claim Description: I crashed into a tree</div>
+                <div>Claim Description: [[claim.claimDescription]]</div>
                 <div>Related Policy: Policy 1</div>
                 <div>Incident Date: 09/03/2016</div>
                 <div>Incident Type: Single Party</div>
                 <div>Status:</div>
-                <status-bar></status-bar>
+                <status-bar current-claim="[[claim]]"></status-bar>
 
             </div>
 
@@ -40,10 +40,11 @@
             is: 'claim-display',
             behaviors: [ReduxBehavior,ClaimantAPIBehavior],
             actions: {
-                addToken: function(token) {
+                addClaim: function(claimId, claimData) {
                     return {
-                        type: 'SET_TOKEN',
-                        token:token,
+                        type: 'ADD_CLAIM',
+                        claimId: claimId,
+                        claim: claimData
                     };
                 },
             },
@@ -56,10 +57,18 @@
                     type: String,
                     statePath: 'token',
                 },
-
+                claim: {
+                    type: Object,
+                    statePath: function (state) {
+                        return state.claims["3"];
+                    }
+                }
             },
             ready: function () {
-                this._claimantApi().getClaim( "3" ,this.token);
+                var _this = this;
+                this._claimantApi().getClaim( "3" ,this.token).then(function (claimValue) {
+                   _this.dispatch('addClaim', "3", claimValue);
+                });
 
             }
         });
