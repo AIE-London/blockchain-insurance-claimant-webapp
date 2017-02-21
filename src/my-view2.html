@@ -58,8 +58,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       fetchClaims: function () {
         var _this = this;
         this._claimantApi().getClaims(this.username, this.token).then(function (body) {
-          console.log("CLAIMS");
-          console.log(body);
           _this.dispatch('setClaimData', body.results);
         });
       }
