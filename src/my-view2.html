@@ -35,9 +35,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'my-view2',
       behaviors: [ReduxBehavior, ClaimantAPIBehavior],
       actions: {
-        setClaimData: function() {
+        setClaimData: function(claimData) {
           return {
             type: 'SET_CLAIMS',
+            claims: claimData
           };
         },
       },
@@ -52,11 +53,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       ready: function () {
-        this._claimantApi().getClaims(this.username, this.token).then(function (response) {
-          response.json().then(function (body) {
-            console.log("CLAIMS");
-            console.log(body);
-          });
+        this.fetchClaims();
+      },
+      fetchClaims: function () {
+        var _this = this;
+        this._claimantApi().getClaims(this.username, this.token).then(function (body) {
+          console.log("CLAIMS");
+          console.log(body);
+          _this.dispatch('setClaimData', body.results);
         });
       }
     });
