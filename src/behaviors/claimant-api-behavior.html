@@ -24,6 +24,9 @@
                         })
                     }).then(function(response) {
                         console.log(response);
+                        if (response.status && response.status !== 200) {
+                            throw new Error("Failed to login");
+                        }
                         return response.headers.get('Token');
                     });
                 },
