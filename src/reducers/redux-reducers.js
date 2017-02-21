@@ -30,6 +30,15 @@ var reducers = function (state, action) {
                 transactions: action.transactions,
             });
             break;
+        case 'ADD_CLAIM':
+            let addClaimObj = {};
+
+            addClaimObj[action.claimId] = action.claim;
+
+            newState = Object.assign({}, state, {
+                claims: Object.assign({}, state.claims, addClaimObj),
+            });
+            break;
         case 'SET_TOKEN':
             newState = Object.assign({}, state, {
                 token: action.token ,

@@ -17,44 +17,48 @@
 
             .flex-container {
                 display: flex;
-
+                flex-wrap: wrap;
                 justify-content: space-around;
             }
 
             .active {
-                background-color: lawngreen;
+                background-color: #4CAF50;
+                border: 2px solid #fff;
             }
 
             .inactive {
-                background-color: lightgrey;
+                background-color: white;
+                opacity: 0.4;
+                border: 2px solid#000;
+            }
+
+            .previouslyActive {
+                opacity: 0.4;
+                background-color: #2E7D32;
+                border: 2px solid #fff;
             }
 
             .circleBase {
                 border-radius: 50%;
                 width:50px;
                 height:50px;
-                border:2px solid#000;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
 
             .inner {
-                width: 50%;
                 margin: 0 auto;
             }
             .outer {
                 margin: 10px;
+                text-align: center;
+                min-width: 50px;
             }
 
         </style>
 
         <div class="flex-container">
-            <!-- <div style = "width:70px; height:70px; border:2px solid#000" class$ = "[[_getStyle(currentClaim, 'Claim Raised')]]"> Claim Raised</div>
-            <div style = "width:70px; height:70px; border:2px solid#000" class$ = "[[_getStyle(currentClaim, 'Car Inspected')]]"> Car Inspected</div>
-            <div style = "width:70px; height:70px; border:2px solid#000" class$ = "[[_getStyle(currentClaim, 'Value Agreed')]]"> Value Agreed</div>
-            <div style = "width:70px; height:70px; border:2px solid#000" class$ = "[[_getStyle(currentClaim, 'Payment Made')]]"> Payment Made</div> -->
-
 
             <div class = "outer">
                 <div  class$ = "[[_getStyle(currentClaim, 'Claim Raised')]]">
@@ -103,9 +107,14 @@
                 },
             },
             properties: {
-                transactions: {
+                _states: {
                     type: Array,
-                    statePath: 'transactions',
+                    value: [
+                            'Claim Raised',
+                            'Car Inspected',
+                            'Value Agreed',
+                            'Payment Made'
+                    ],
                 },
 
                 currentClaim: {
@@ -124,8 +133,10 @@
             },
 
             _getStyle: function(claim, status) {
-                if (claim.status === status) {
+                if (claim !== null && claim.status === status) {
                     return "active circleBase inner";
+                } else if (claim !== null && (this._states.indexOf(status) < this._states.indexOf(claim.status))) {
+                    return "previouslyActive circleBase inner";
                 } else {
                     return "inactive circleBase inner";
                 }
