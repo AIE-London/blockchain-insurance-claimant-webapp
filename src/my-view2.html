@@ -11,7 +11,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./store/redux-store.html">
 <link rel="import" href="./shared-styles.html">
 <link rel="import" href="./components/transaction-history.html">
-
+<link rel="import" href="./behaviors/claimant-api-behavior.html">
 
 <dom-module id="my-view2">
   <template>
@@ -23,7 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <h1 class="claim_created">Transaction History</h1>
+    <h1 class="claim_created">My Claims</h1>
     <transaction-history></transaction-history>
   </template>
 
@@ -33,11 +33,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     /* global ReduxBehavior */
     Polymer({
       is: 'my-view2',
-      behaviors: [ReduxBehavior],
+      behaviors: [ReduxBehavior, ClaimantAPIBehavior],
       actions: {
-        increment: function() {
+        setClaimData: function() {
           return {
-            type: 'INCREMENT_COUNT',
+            type: 'SET_CLAIMS',
           };
         },
       },
@@ -46,11 +46,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           statePath: 'token',
         },
+        username: {
+          type: String,
+          statePath: 'username',
+        }
       },
-
-      _increment: function() {
-
-      },
+      ready: function () {
+        this._claimantApi().getClaims(this.username, this.token).then(function (response) {
+          response.json().then(function (body) {
+            console.log("CLAIMS");
+            console.log(body);
+          });
+        });
+      }
     });
   </script>
 </dom-module>

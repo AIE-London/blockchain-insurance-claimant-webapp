@@ -42,6 +42,7 @@ var reducers = function (state, action) {
         case 'SET_TOKEN':
             newState = Object.assign({}, state, {
                 token: action.token ,
+                username: action.username,
                 loggedIn: true,
             });
             break;
