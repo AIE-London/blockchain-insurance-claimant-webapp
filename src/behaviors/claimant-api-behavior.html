@@ -45,6 +45,25 @@
                         return json;
                     });
                 },
+                approvedPayment: function (claimId,token,username,agreement) {
+                    let headers = new Headers();
+                    headers.append("Content-Type", "application/json");
+                    headers.append("authorization", "bearer " + token);
+                    return fetch(_endpoint + "/claimant/" + username + "/claim/" + claimId + "/payout/agreement", {
+                        method: 'GET',
+                        headers: headers,
+                        body: JSON.stringify({
+                            "agreement": agreement
+                        })
+
+                    }).then(function (response) {
+                        console.log(response);
+                        return response.json();
+                    }).then(function (json) {
+                        console.log(json);
+                        return json;
+                    });
+                },
                 getClaims: function (username, token) {
                     let headers = new Headers();
                     headers.append("Content-Type", "application/json");
