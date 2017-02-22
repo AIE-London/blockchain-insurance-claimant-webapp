@@ -8,6 +8,10 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<<<<<<< HEAD
+<link rel="import" href="../behaviors/claim-api-behavior.html">
+=======
+>>>>>>> master
 <link rel="import" href="../behaviors/claimant-api-behavior.html">
 
 <dom-module id="claim-creation">
@@ -23,13 +27,6 @@
         <paper-card id="claim-creation" >
             <div class="card-content">
 
-                <h2>Vehicle  data</h2>
-                <paper-input label="Make"> </paper-input>
-                <paper-input label="Model" > </paper-input>
-                <paper-input label="Year" type = "number"> </paper-input>
-                <paper-input label="Mileage"  type = "number" > </paper-input>
-
-
                 <h2>Claim  data</h2>
                 <paper-dropdown-menu label="Claim type">
                     <paper-listbox id = "listBox" class="dropdown-content" selected = "{{type}}">
@@ -42,20 +39,26 @@
 
                 <paper-textarea label="Description of incident" value = "{{description}}"></paper-textarea>
 
+                <paper-dropdown-menu label="Policy">
+                    <paper-listbox id = "listBox2" class="dropdown-content" selected = "{{policy}}">
+                        <template is="dom-repeat" items="{{availablePolicies}}">
+                            <paper-item>{{item.relations.vehicle}}</paper-item>
+                        </template>
+
+                    </paper-listbox>
+                </paper-dropdown-menu>
+
+
                 <h4>Incident date</h4>
                 <paper-dialog id="dialog" class="paper-date-picker-dialog" modal
                               on-iron-overlay-closed="dismissDialog">
                     <paper-date-picker id="picker" date="{{date}}" dateFormat="yyyy-MM-dd" ></paper-date-picker>
-                    <div class="buttons">
-                        <paper-button dialog-confirm>Set Date</paper-button>
-                    </div>
+
                 </paper-dialog>
-
-
 
             </div>
             <div class="card-actions">
-                <paper-button dialog-dismiss>Cancel</paper-button>
+
                 <paper-button on-tap="_createClaim" autofocus>Submit</paper-button>
             </div>
         </paper-card>
@@ -66,6 +69,14 @@
         /* global ReduxBehavior */
         Polymer({
             is: 'claim-creation',
+            actions: {
+                setPolicies: function(policies) {
+                    return {
+                        type: 'SET_POLICIES',
+                        policies:policies,
+                    };
+                },
+            },
             behaviors: [ReduxBehavior, ClaimantAPIBehavior],
             properties: {
                 transactions: {
@@ -80,21 +91,36 @@
                     type: Array,
                     value: ['Single Party',
                             'Multiple Party']
-                }
+                },
+                availablePolicies: {
+                    type: Array,
+                    statePath: 'policies'
+                },
+
+                username: {
+                    type: String,
+                    statePath: 'username',
+                },
             },
 
             ready: function () {
-
+                var _this = this;
+                this._claimantApi().getAllPolicies(this.username, this.token).then( function(policies) {
+                    _this.dispatch('setPolicies', policies.results);
+                })
             },
             _processDate: function(date) {
                 return date.toISOString().substring(0, 10);
             },
             _createClaim: function() {
-                this._claimantApi().createClaim(this.token,"P1",this.description, this._processDate(this.date), this.typeOptions[this.type]).then(function (token) {
+                this._claimantApi().createClaim(this.token,this._getIdForPolicy(this.policy),this.description, this._processDate(this.date), this.typeOptions[this.type], this.username).then(function (token) {
                     console.log(token);
                 }, function (error) {
                     console.error(error);
                 });
+            },
+            _getIdForPolicy: function(index) {
+                return this.availablePolicies[index].id
             }
 
         });

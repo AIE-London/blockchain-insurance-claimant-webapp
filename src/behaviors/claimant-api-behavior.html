@@ -45,6 +45,25 @@
                         return json;
                     });
                 },
+
+
+                getAllPolicies: function (username,token) {
+                    let headers = new Headers();
+                    headers.append("Content-Type", "application/json");
+                    headers.append("authorization", "bearer " + token);
+                    return fetch(_endpoint + '/caller/'+ username + '/history/policies/all',{
+
+                        method: 'GET',
+                        headers: headers,
+                    }).then(function (response) {
+                        console.log(response);
+                        return response.json();
+                    }).then(function(json){
+                        console.log(json);
+                        return json;
+                    });
+                },
+
                 approvedPayment: function (claimId,token,username,agreement) {
                     let headers = new Headers();
                     headers.append("Content-Type", "application/json");
@@ -69,6 +88,7 @@
                     headers.append("Content-Type", "application/json");
                     headers.append("authorization", "bearer " + token);
                     return fetch(_endpoint + '/caller/' + username + '/history/claims/all',{
+
                         method: 'GET',
                         headers: headers,
                     }).then(function (response) {
@@ -78,12 +98,13 @@
                         console.log(json);
                         return json;
                     });
+
                 },
-                createClaim: function (token,relatedPolicy, description, date, type) {
+                createClaim: function (token,relatedPolicy, description, date, type, username) {
                     let headers = new Headers();
                     headers.append("authorization", "bearer " + token);
                     headers.append("Content-Type", "application/json");
-                    return fetch(_endpoint + 'claimant/DanCotton/claim',{
+                    return fetch(_endpoint + '/claimant/' + username + '/claim',{
                         method: 'POST',
                         headers: headers,
                         body: JSON.stringify({
