@@ -24,7 +24,7 @@
             <template>
                 <paper-item class$="[[item.status]]">
                     <paper-item-body two-line>
-                        <div>Claim #[[item.id]] - Policy #[[item.relations.relatedPolicy]]</div>
+                        <div><a href="/claim-detail/[[item.id]]">Claim #[[item.id]] - Policy #[[item.relations.relatedPolicy]]</a></div>
                         <div secondary>[[item.description]]</div>
                     </paper-item-body>
                 </paper-item>
