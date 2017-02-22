@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 
 <link rel="import" href="../behaviors/claimant-api-behavior.html">
 
@@ -15,6 +16,8 @@
 
                 padding: 10px;
             }
+
+
         </style>
 
         <paper-card id="login_form" >
@@ -29,6 +32,8 @@
             </div>
             <div class="card-actions">
                 <paper-button on-tap="_logIn">Login</paper-button>
+                <paper-toast id="toast"  horizontal-align="right" text="Please check your details and try again."></paper-toast>
+
             </div>
         </paper-card>
 
@@ -41,10 +46,11 @@
             is: 'login-screen',
             behaviors: [ReduxBehavior, ClaimantAPIBehavior],
             actions: {
-                addToken: function(token) {
+                addToken: function(token, username) {
                     return {
                         type: 'SET_TOKEN',
-                        token:token,
+                        token: token,
+                        username: username
                     };
                 },
             },
@@ -71,10 +77,14 @@
             _logIn: function (){
                 var _this = this
                 this._claimantApi().login(this.username, this.password).then(function (token) {
-                   _this.dispatch('addToken',token);
+                   _this.dispatch('addToken', token, _this.username);
                 }, function (error) {
+                    _this.openToast()
                    console.error(error);
-                });
+                })
+            },
+            openToast: function() {
+                this.$.toast.open();
             }
         });
     </script>

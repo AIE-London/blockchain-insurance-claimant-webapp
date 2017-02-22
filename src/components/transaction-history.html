@@ -20,12 +20,12 @@
                 color: red;
             }
         </style>
-        <iron-list items="[[transactions]]">
+        <iron-list items="[[_getClaimsArray(_claims)]]">
             <template>
-                <paper-item class$="[[item.stage]]">
+                <paper-item class$="[[item.status]]">
                     <paper-item-body two-line>
-                        <div>[[item.id]]</div>
-                        <div secondary>[[item.claimant]]</div>
+                        <div><a href="/claim-detail/[[item.id]]">Claim #[[item.id]] - Policy #[[item.relations.relatedPolicy]]</a></div>
+                        <div secondary>[[item.description]]</div>
                     </paper-item-body>
                 </paper-item>
             </template>
@@ -37,29 +37,29 @@
         Polymer({
             is: 'transaction-history',
             behaviors: [ReduxBehavior],
-            actions: {
-                add_transactions: function(data) {
-                    return {
-                        type: 'ADD_TRANSACTIONS',
-                        transactions: data
-                    };
+            properties: {
+                _claims: {
+                    type: Object,
+                    statePath: 'claims',
                 },
             },
-            properties: {
-                transactions: {
-                    type: Array,
-                    statePath: 'transactions',
-                },
+            _getClaimsArray: function (_claims) {
+                if (_claims) {
+                    return Object.keys(_claims).map(function (key) {
+                        var id = key;
+                        key = {
+                            id: id,
+                            description: _claims[id].details.description,
+                            status: _claims[id].details.status,
+                            relations: _claims[id].relations
+                        }
+                        return key;
+                    });
+                } else {
+                    return [];
+                }
             },
             ready: function () {
-                let _this = this;
-                fetch('https://demo7632555.mockable.io/test/transactions/')
-                        .then(function (response) {
-                            response.json().then(function (body){
-                                _this.dispatch('add_transactions', body);
-                                console.log(body);
-                            });
-                });
             }
         });
     </script>

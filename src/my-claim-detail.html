@@ -1,0 +1,45 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="./store/redux-store.html">
+<link rel="import" href="./shared-styles.html">
+<link rel="import" href="./components/claim-display.html">
+
+<dom-module id="my-claim-detail">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+
+                padding: 10px;
+            }
+        </style>
+        <app-location route="{{route}}"></app-location>
+        <app-route
+                route="{{route}}"
+                pattern="/claim-detail/:claimId"
+                data="{{_routeData}}"
+                tail="{{subroute}}"></app-route>
+        <h1 class="claim_created">Claim #[[_routeData.claimId]]</h1>
+        <claim-display claim-id="[[_routeData.claimId]]"></claim-display>
+    </template>
+
+
+
+    <script>
+        /* global ReduxBehavior */
+        Polymer({
+            is: 'my-claim-detail',
+            behaviors: [ReduxBehavior],
+            properties: {
+            },
+        });
+    </script>
+</dom-module>

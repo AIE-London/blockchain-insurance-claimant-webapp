@@ -16,16 +16,13 @@
             }
         </style>
 
-        <paper-card id="claim_display" >
+        <paper-card id="claim_display" heading="Claim #[[_claim.id]]">
             <div class="card-content">
-                <h2>Claim Information</h2>
-                <div>Claim Type: [[claim.claimType]]</div>
-                <div>Claim Description: [[claim.claimDescription]]</div>
-                <div>Related Policy: [[claim.relatedPolicy]]</div>
-                <div>Incident Date: [[claim.incidentDate]]</div>
-                <div>Incident Type: [[claim.incidentType]]</div>
-                <div>Status:</div>
-                <status-bar current-claim="[[claim]]"></status-bar>
+                <div><strong>Description:</strong> [[_claim.details.description]]</div>
+                <div><strong>Related Policy:</strong> [[_claim.relations.relatedPolicy]]</div>
+                <div><strong>Incident Date:</strong> [[_claim.details.incident.date]]</div>
+                <div><strong>Incident Type:</strong> [[_claim.details.incident.type]]</div>
+                <status-bar current-stage="[[_claim.details.status]]"></status-bar>
 
             </div>
 
@@ -38,42 +35,23 @@
         /* global ReduxBehavior */
         Polymer({
             is: 'claim-display',
-            behaviors: [ReduxBehavior,ClaimantAPIBehavior],
-            actions: {
-                addClaim: function(claimId, claimData) {
-                    return {
-                        type: 'ADD_CLAIM',
-                        claimId: claimId,
-                        claim: claimData
-                    };
-                },
-            },
+            behaviors: [ReduxBehavior],
             properties: {
                 claimId: {
                     type: String,
-                    required: true
+                    required: true,
+                    observer: '_claimIdChanged'
                 },
-                token: {
-                    type: String,
-                    statePath: 'token',
-                },
-                claim: {
+                _claim: {
                     type: Object,
-                    statePath: function (state) {
-                        if (state.claims) {
-                            return state.claims[this.claimId];
-                        } else {
-                            return null;
-                        }
-                    }
+                    value: {}
                 }
             },
+            _claimIdChanged: function () {
+                this._claim = this.getState().claims[this.claimId];
+                console.log(this._claim);
+            },
             ready: function () {
-                var _this = this;
-                this._claimantApi().getClaim(this.claimId, this.token).then(function (claimValue) {
-                   _this.dispatch('addClaim', _this.claimId, claimValue);
-                });
-
             }
         });
     </script>

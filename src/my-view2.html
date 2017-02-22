@@ -11,20 +11,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./store/redux-store.html">
 <link rel="import" href="./shared-styles.html">
 <link rel="import" href="./components/transaction-history.html">
-
+<link rel="import" href="./behaviors/claimant-api-behavior.html">
+<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
 
 <dom-module id="my-view2">
   <template>
     <style include="shared-styles">
-      :host {
+      main {
         display: block;
 
         padding: 10px;
       }
+      paper-progress {
+        width: 100%;
+        --paper-progress-container-color: #eeeeee;
+        --paper-progress-active-color: var(--app-highlight-color);
+      }
     </style>
-
-    <h1 class="claim_created">Transaction History</h1>
-    <transaction-history></transaction-history>
+    <paper-progress indeterminate disabled="[[!isLoading]]"></paper-progress>
+    <main>
+      <h1 class="claim_created">My Claims</h1>
+      <transaction-history></transaction-history>
+    </main>
   </template>
 
 
@@ -33,11 +41,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     /* global ReduxBehavior */
     Polymer({
       is: 'my-view2',
-      behaviors: [ReduxBehavior],
+      behaviors: [ReduxBehavior, ClaimantAPIBehavior],
       actions: {
-        increment: function() {
+        setClaimData: function(claimData) {
           return {
-            type: 'INCREMENT_COUNT',
+            type: 'SET_CLAIMS',
+            claims: claimData
           };
         },
       },
@@ -46,10 +55,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           statePath: 'token',
         },
+        username: {
+          type: String,
+          statePath: 'username',
+        }
       },
-
-      _increment: function() {
-
+      ready: function () {
+        this.isLoading = true;
+        this.fetchClaims();
+      },
+      fetchClaims: function () {
+        var _this = this;
+        this._claimantApi().getClaims(this.username, this.token).then(function (body) {
+          _this.dispatch('setClaimData', body.results);
+          _this.isLoading = false;
+        });
       },
     });
   </script>
