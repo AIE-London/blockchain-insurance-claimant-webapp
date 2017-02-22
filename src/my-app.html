@@ -23,6 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./store/redux-store.html">
 <link rel="import" href="../bower_components/socket-io/socket-io.html">
 
+
 <dom-module id="my-app">
   <template>
     <style>
@@ -57,6 +58,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: black;
         font-weight: bold;
       }
+
     </style>
     <socket-io id="socket" endpoint="https://blockchain-insurance.eu-gb.mybluemix.net" events="[[events]]"></socket-io>
     <app-location route="{{route}}"></app-location>

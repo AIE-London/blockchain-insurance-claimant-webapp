@@ -16,14 +16,12 @@
             }
         </style>
 
-        <paper-card id="claim_display" >
+        <paper-card id="claim_display" heading="Claim #[[_claim.id]]">
             <div class="card-content">
-                <h2>Claim Information</h2>
-                <div>Claim Description: [[_claim.details.description]]</div>
-                <div>Related Policy: [[_claim.relations.relatedPolicy]]</div>
-                <div>Incident Date: [[_claim.details.incident.date]]</div>
-                <div>Incident Type: [[_claim.details.incident.type]]</div>
-                <div>Status:</div>
+                <div><strong>Description:</strong> [[_claim.details.description]]</div>
+                <div><strong>Related Policy:</strong> [[_claim.relations.relatedPolicy]]</div>
+                <div><strong>Incident Date:</strong> [[_claim.details.incident.date]]</div>
+                <div><strong>Incident Type:</strong> [[_claim.details.incident.type]]</div>
                 <status-bar current-stage="[[_claim.details.status]]"></status-bar>
 
             </div>
