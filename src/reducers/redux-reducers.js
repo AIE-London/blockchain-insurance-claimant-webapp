@@ -3,7 +3,8 @@
 const initialState = {
     count: 0,
     transactions: [],
-    loggedIn: false
+    loggedIn: false,
+    policies: []
 };
 var reducers = function (state, action) {
     var save = true;
@@ -37,6 +38,12 @@ var reducers = function (state, action) {
 
             newState = Object.assign({}, state, {
                 claims: Object.assign({}, state.claims, addClaimObj),
+            });
+            break;
+        case 'SET_POLICIES':
+
+            newState = Object.assign({}, state, {
+                policies: action.policies,
             });
             break;
         case 'SET_TOKEN':

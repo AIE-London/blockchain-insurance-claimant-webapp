@@ -45,6 +45,22 @@
                         console.log(json);
                         return json;
                     });
+                },
+
+                getAllPolicies: function (username,token) {
+                    let headers = new Headers();
+                    headers.append("Content-Type", "application/json");
+                    headers.append("authorization", "bearer " + token);
+                    return fetch(_endpoint + '/caller/'+ username + '/history/policies/all',{
+                        method: 'GET',
+                        headers: headers,
+                    }).then(function (response) {
+                        console.log(response);
+                        return response.json();
+                    }).then(function(json){
+                        console.log(json);
+                        return json;
+                    });
                 }
             }
         }
