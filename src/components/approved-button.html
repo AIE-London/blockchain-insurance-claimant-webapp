@@ -58,13 +58,13 @@
             },
 
             _approvedButton: function (){
-                ClaimantAPIBehavior.approvedPayment(claimId,token,username,true)
+                this._claimantApi().approvedPayment(this.claimId,this.token,this.username,true)
 
 
                 },
 
             _rejectButton: function (){
-                ClaimantAPIBehavior.approvedPayment(claimId,token,username,false)
+                this._claimantApi().approvedPayment(this.claimId,this.token,this.username,false)
 
             }
 
