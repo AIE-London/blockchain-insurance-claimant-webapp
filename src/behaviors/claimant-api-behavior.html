@@ -1,4 +1,9 @@
 <script>
+    /**
+     * Claimant API behavior.
+     *
+     * @polymerBehavior
+     */
     var ClaimantAPIBehavior = {
         properties: {
             _endpoint: {
@@ -88,7 +93,6 @@
                     headers.append("Content-Type", "application/json");
                     headers.append("authorization", "bearer " + token);
                     return fetch(_endpoint + '/caller/' + username + '/history/claims/all',{
-
                         method: 'GET',
                         headers: headers,
                     }).then(function (response) {

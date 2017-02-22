@@ -1,11 +1,18 @@
 <link rel="import" href="../../bower_components/polymer-redux/polymer-redux.html">
 <script src="../offline-cache/offline-cache.js"></script>
 <script src="../reducers/redux-reducers.js"></script>
-
 <script>
     /* eslint new-cap: "off" */
     /* eslint no-unused-vars: "off" */
     /* global Redux, reducers, PolymerRedux */
     var store = Redux.createStore(reducers);
-    var ReduxBehavior = PolymerRedux(store);
+</script>
+<script>
+    /**
+     * Behavior providing redux state access.
+     *
+     * @polymerBehavior
+     */
+    var ReduxBehavior = {};
+    ReduxBehavior = PolymerRedux(store);
 </script>
