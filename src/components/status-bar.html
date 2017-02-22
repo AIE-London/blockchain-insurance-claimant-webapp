@@ -54,41 +54,20 @@
                 margin: 10px;
                 text-align: center;
                 min-width: 50px;
+                max-width: 100px;
             }
 
         </style>
 
         <div class="flex-container">
-
-            <div class = "outer">
-                <div  class$ = "[[_getStyle(currentClaim, 'Claim Raised')]]">
-                    <iron-icon icon="myIcons:check-circle"></iron-icon>
+            <template is="dom-repeat" items="[[_states]]">
+                <div class = "outer">
+                    <div  class$ = "[[_getStyle(item)]]">
+                        <iron-icon icon="[[_getIcon(item)]]"></iron-icon>
+                    </div>
+                    <p>[[_getName(item)]]</p>
                 </div>
-                <p>Claim Raised</p>
-            </div>
-
-            <div class = "outer">
-                <div  class$ = "[[_getStyle(currentClaim, 'Car Inspected')]]">
-                <iron-icon icon="myIcons:directions-car"></iron-icon>
-                </div>
-                <p>Car Inspected</p>
-            </div>
-
-            <div class = "outer">
-                <div class$ = "[[_getStyle(currentClaim, 'Value Agreed')]]">
-                <iron-icon icon="myIcons:group"></iron-icon>
-                </div>
-                <p>Value Agreed</p>
-            </div>
-
-            <div class = "outer">
-                <div class$ = "[[_getStyle(currentClaim, 'Payment Made')]]">
-                    <iron-icon icon="myIcons:local-atm"></iron-icon>
-                </div>
-                <p>Payment Made</p>
-
-            </div>
-
+            </template>
         </div>
 
     </template>
@@ -107,35 +86,48 @@
                 },
             },
             properties: {
+                _stateNames: {
+                    type: Array,
+                    value: [
+                        'Garage Report',
+                        'Insurer Decision',
+                        'Settlement Agreement',
+                        'Settled'
+                    ],
+                },
                 _states: {
                     type: Array,
                     value: [
-                            'Claim Raised',
-                            'Car Inspected',
-                            'Value Agreed',
-                            'Payment Made'
+                        'pending_decision',
+                        'awaiting_claimant_confirmation',
+                        'settled_2',
+                        'settled'
                     ],
                 },
+                _stateIcons: {
+                    type: Array,
+                    value: [
+                        'directions-car',
+                        'check-circle',
+                        'group',
+                        'local-atm'
+                    ],
 
-                currentClaim: {
-                    type: Object,
-                    value: {
-                        "claimType": "Type 1",
-                        "claimDescription": "Description of claim",
-                        "relatedPolicy": "Policy 1",
-                        "incidentDate": "2106-01-01",
-                        "incidentType": "Single Party",
-                        "status": "Car Inspected"
-                    }
+                },
+                currentStage: {
+                    type: String,
                 }
             },
-            ready: function () {
+            _getName: function(state) {
+                return this._stateNames[this._states.indexOf(state)];
             },
-
-            _getStyle: function(claim, status) {
-                if (claim !== null && claim.status === status) {
+            _getIcon: function(state) {
+                return "myIcons:" + this._stateIcons[this._states.indexOf(state)];
+            },
+            _getStyle: function(status) {
+                if (this.currentStage !== null && this.currentStage === status) {
                     return "active circleBase inner";
-                } else if (claim !== null && (this._states.indexOf(status) < this._states.indexOf(claim.status))) {
+                } else if (this.currentStage !== null && (this._states.indexOf(status) < this._states.indexOf(this.currentStage))) {
                     return "previouslyActive circleBase inner";
                 } else {
                     return "inactive circleBase inner";
