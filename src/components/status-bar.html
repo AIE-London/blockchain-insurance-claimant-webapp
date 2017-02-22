@@ -61,28 +61,28 @@
         <div class="flex-container">
 
             <div class = "outer">
-                <div  class$ = "[[_getStyle(currentClaim, 'Claim Raised')]]">
+                <div  class$ = "[[_getStyle(currentStage, 'Claim Raised')]]">
                     <iron-icon icon="myIcons:check-circle"></iron-icon>
                 </div>
                 <p>Claim Raised</p>
             </div>
 
             <div class = "outer">
-                <div  class$ = "[[_getStyle(currentClaim, 'Car Inspected')]]">
+                <div  class$ = "[[_getStyle(currentStage, 'Car Inspected')]]">
                 <iron-icon icon="myIcons:directions-car"></iron-icon>
                 </div>
                 <p>Car Inspected</p>
             </div>
 
             <div class = "outer">
-                <div class$ = "[[_getStyle(currentClaim, 'Value Agreed')]]">
+                <div class$ = "[[_getStyle(currentStage, 'Value Agreed')]]">
                 <iron-icon icon="myIcons:group"></iron-icon>
                 </div>
                 <p>Value Agreed</p>
             </div>
 
             <div class = "outer">
-                <div class$ = "[[_getStyle(currentClaim, 'Payment Made')]]">
+                <div class$ = "[[_getStyle(currentStage, 'Payment Made')]]">
                     <iron-icon icon="myIcons:local-atm"></iron-icon>
                 </div>
                 <p>Payment Made</p>
@@ -117,21 +117,11 @@
                     ],
                 },
 
-                currentClaim: {
-                    type: Object,
-                    value: {
-                        "claimType": "Type 1",
-                        "claimDescription": "Description of claim",
-                        "relatedPolicy": "Policy 1",
-                        "incidentDate": "2106-01-01",
-                        "incidentType": "Single Party",
-                        "status": "Car Inspected"
-                    }
+                currentStage: {
+                    type: String,
+                    value: ''
                 }
             },
-            ready: function () {
-            },
-
             _getStyle: function(claim, status) {
                 if (claim !== null && claim.status === status) {
                     return "active circleBase inner";
