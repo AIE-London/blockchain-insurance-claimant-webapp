@@ -59,8 +59,15 @@
         </style>
 
         <div class="flex-container">
-
-            <div class = "outer">
+            <template is="dom-repeat" items="[[_states]]">
+                <div class = "outer">
+                    <div  class$ = "[[_getStyle(item)]]">
+                        <iron-icon icon="[[_getIcon(item)]]"></iron-icon>
+                    </div>
+                    <p>[[_getName(item)]]</p>
+                </div>
+            </template>
+            <!--<div class = "outer">
                 <div  class$ = "[[_getStyle(currentStage, 'Claim Raised')]]">
                     <iron-icon icon="myIcons:check-circle"></iron-icon>
                 </div>
@@ -87,8 +94,7 @@
                 </div>
                 <p>Payment Made</p>
 
-            </div>
-
+            </div>-->
         </div>
 
     </template>
@@ -107,25 +113,48 @@
                 },
             },
             properties: {
+                _stateNames: {
+                    type: Array,
+                    value: [
+                        'Garage Report',
+                        'Insurer Decision',
+                        'Settlement Agreement',
+                        'Settled'
+                    ],
+                },
                 _states: {
                     type: Array,
                     value: [
-                            'Claim Raised',
-                            'Car Inspected',
-                            'Value Agreed',
-                            'Payment Made'
+                        'pending_decision',
+                        'awaiting_claimant_confirmation',
+                        'settled_2',
+                        'settled'
                     ],
                 },
+                _stateIcons: {
+                    type: Array,
+                    value: [
+                        'directions-car',
+                        'check-circle',
+                        'group',
+                        'local-atm'
+                    ],
 
+                },
                 currentStage: {
                     type: String,
-                    value: ''
                 }
             },
-            _getStyle: function(claim, status) {
-                if (claim !== null && claim.status === status) {
+            _getName: function(state) {
+                return this._stateNames[this._states.indexOf(state)];
+            },
+            _getIcon: function(state) {
+                return "myIcons:" + this._stateIcons[this._states.indexOf(state)];
+            },
+            _getStyle: function(status) {
+                if (this.currentStage !== null && this.currentStage === status) {
                     return "active circleBase inner";
-                } else if (claim !== null && (this._states.indexOf(status) < this._states.indexOf(claim.status))) {
+                } else if (this.currentStage !== null && (this._states.indexOf(status) < this._states.indexOf(this.currentStage))) {
                     return "previouslyActive circleBase inner";
                 } else {
                     return "inactive circleBase inner";
