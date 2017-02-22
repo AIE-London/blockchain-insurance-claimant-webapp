@@ -44,16 +44,20 @@
                 },
             },
             _getClaimsArray: function (_claims) {
-                return Object.keys(_claims).map(function (key) {
-                    var id = key;
-                    key = {
-                        id: id,
-                        description: _claims[id].details.description,
-                        status: _claims[id].details.status,
-                        relations: _claims[id].relations
-                    }
-                    return key;
-                });
+                if (_claims) {
+                    return Object.keys(_claims).map(function (key) {
+                        var id = key;
+                        key = {
+                            id: id,
+                            description: _claims[id].details.description,
+                            status: _claims[id].details.status,
+                            relations: _claims[id].relations
+                        }
+                        return key;
+                    });
+                } else {
+                    return [];
+                }
             },
             ready: function () {
             }

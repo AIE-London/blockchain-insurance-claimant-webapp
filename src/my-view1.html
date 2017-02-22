@@ -15,6 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./components/transaction-history.html">
 <link rel="import" href="./behaviors/claimant-api-behavior.html">
 <link rel="import" href="./components/claim-display.html">
+<link rel="import" href="./my-view2.html">
 
 <dom-module id="my-view1">
   <template>
@@ -22,19 +23,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
 
-        padding: 10px;
       }
     </style>
 
 
     <template is="dom-if" if="[[_status]]">
-      <h1>Welcome to your policy page.</h1>
-      <paper-card>
-      <div class="card-actions">
-        <paper-button on-tap="_logOut">Log Out</paper-button>
-      </div>
-      </paper-card>
-      </template>
+      <my-view2></my-view2>
+    </template>
 
     <template is="dom-if" if="[[!_status]]">
       <login-screen></login-screen>
@@ -46,42 +41,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     /* global ReduxBehavior */
     Polymer({
         is: 'my-view1',
-        behaviors: [ReduxBehavior, ClaimantAPIBehavior],
-        actions: {
-            logOut: function() {
-                return {
-                    type: 'LOG_OUT',
-
-                };
-            },
-        },
-
+        behaviors: [ReduxBehavior],
         properties: {
-            count: {
-                type: Number,
-                statePath: 'count',
-            },
             _status: {
                 type: Boolean,
                 value: true,
                 statePath: 'loggedIn',
             },
         },
-        _loggedIn: function (status) {
-            return status;
-        },
-        _loggedOut: function (status) {
-            return status;
-        },
-        _increment: function() {
-            this.dispatch('increment');
-        },
-
-        ready: function () {
-        },
-        _logOut: function (){
-            this.dispatch('logOut');
-        }
     });
   </script>
 </dom-module>
