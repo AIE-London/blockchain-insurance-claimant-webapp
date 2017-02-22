@@ -8,7 +8,7 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
-<link rel="import" href="../behaviors/claim-api-behavior.html">
+<link rel="import" href="../behaviors/claimant-api-behavior.html">
 
 <dom-module id="claim-creation">
     <template>
@@ -66,7 +66,7 @@
         /* global ReduxBehavior */
         Polymer({
             is: 'claim-creation',
-            behaviors: [ReduxBehavior, ClaimAPIBehavior],
+            behaviors: [ReduxBehavior, ClaimantAPIBehavior],
             properties: {
                 transactions: {
                     type: Array,
@@ -90,7 +90,7 @@
                 return date.toISOString().substring(0, 10);
             },
             _createClaim: function() {
-                this._claim().createClaim(this.token,"P1",this.description, this._processDate(this.date), this.typeOptions[this.type]).then(function (token) {
+                this._claimantApi().createClaim(this.token,"P1",this.description, this._processDate(this.date), this.typeOptions[this.type]).then(function (token) {
                     console.log(token);
                 }, function (error) {
                     console.error(error);

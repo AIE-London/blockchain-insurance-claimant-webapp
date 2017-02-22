@@ -46,10 +46,11 @@
             is: 'login-screen',
             behaviors: [ReduxBehavior, ClaimantAPIBehavior],
             actions: {
-                addToken: function(token) {
+                addToken: function(token, username) {
                     return {
                         type: 'SET_TOKEN',
-                        token:token,
+                        token: token,
+                        username: username
                     };
                 },
             },
@@ -76,7 +77,7 @@
             _logIn: function (){
                 var _this = this
                 this._claimantApi().login(this.username, this.password).then(function (token) {
-                   _this.dispatch('addToken',token);
+                   _this.dispatch('addToken', token, _this.username);
                 }, function (error) {
                     _this.openToast()
                    console.error(error);

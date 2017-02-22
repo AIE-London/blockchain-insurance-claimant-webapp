@@ -30,7 +30,6 @@
                         return response.headers.get('Token');
                     });
                 },
-
                 getClaim: function (claimId,token) {
                     let headers = new Headers();
                     headers.append("Content-Type", "application/json");
@@ -46,23 +45,55 @@
                         return json;
                     });
                 },
-
                 approvedPayment: function (claimId,token,username,agreement) {
                     let headers = new Headers();
                     headers.append("Content-Type", "application/json");
                     headers.append("authorization", "bearer " + token);
-                    return fetch(_mockEndpoint + "/claimant/" + username + "/claim/" + claimId + "/payout/agreement",{
+                    return fetch(_endpoint + "/claimant/" + username + "/claim/" + claimId + "/payout/agreement", {
                         method: 'GET',
                         headers: headers,
                         body: JSON.stringify({
                             "agreement": agreement
                         })
+
+                    }).then(function (response) {
+                        console.log(response);
+                        return response.json();
+                    }).then(function (json) {
+                        console.log(json);
+                        return json;
+                    });
+                },
+                getClaims: function (username, token) {
+                    let headers = new Headers();
+                    headers.append("Content-Type", "application/json");
+                    headers.append("authorization", "bearer " + token);
+                    return fetch(_endpoint + '/caller/' + username + '/history/claims/all',{
+                        method: 'GET',
+                        headers: headers,
                     }).then(function (response) {
                         console.log(response);
                         return response.json();
                     }).then(function(json){
                         console.log(json);
                         return json;
+                    });
+                },
+                createClaim: function (token,relatedPolicy, description, date, type) {
+                    let headers = new Headers();
+                    headers.append("authorization", "bearer " + token);
+                    headers.append("Content-Type", "application/json");
+                    return fetch(_endpoint + 'claimant/DanCotton/claim',{
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify({
+                            relatedPolicy: relatedPolicy,
+                            description: description,
+                            incidentDate: date,
+                            type: type
+                        })
+                    }).then(function (response) {
+                        return response.headers.get('Token');
                     });
                 }
             }

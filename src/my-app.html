@@ -19,11 +19,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="./store/redux-store.html">
 <link rel="import" href="../bower_components/socket-io/socket-io.html">
 
-<link rel="import" href="my-icons.html">
+<link rel="import" href="./icons/myIcons.html">
+
 <dom-module id="my-app">
   <template>
     <style>
@@ -58,6 +60,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: black;
         font-weight: bold;
       }
+      hr {
+        margin: 2em 1em 0.5em;
+        background: black;
+        border: black 1px solid;
+        opacity: 0.3;
+      }
     </style>
     <socket-io id="socket" endpoint="https://blockchain-insurance.eu-gb.mybluemix.net" events="[[events]]"></socket-io>
     <app-location route="{{route}}"></app-location>
@@ -71,11 +79,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- Drawer content -->
       <app-drawer id="drawer">
         <app-toolbar>Menu</app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="view1" href="/view1">Home Page</a>
-          <a name="view2" href="/view2">Transaction History</a>
-          <a name="view3" href="/view3">Create a Claim</a>
-        </iron-selector>
+          <template is="dom-if" if="[[_status]]">
+            <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+              <a name="view1" href="/">My Claims</a>
+              <a name="view3" href="/view3">Create a Claim</a>
+              <hr />
+              <paper-button on-tap="_logOut">Log Out</paper-button>
+            </iron-selector>
+          </template>
+          <template is="dom-if" if="[[!_status]]">
+            <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+              <a name="view1" href="/view1">Home Page</a>
+            </iron-selector>
+          </template>
       </app-drawer>
 
       <!-- Main content -->
@@ -83,7 +99,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <app-header condenses reveals effects="waterfall">
           <app-toolbar>
-            <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
+            <paper-icon-button icon="myIcons:menu" drawer-toggle></paper-icon-button>
             <div main-title>Your Insurance</div>
           </app-toolbar>
         </app-header>
@@ -94,8 +110,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             fallback-selection="view404"
             role="main">
           <my-view1 name="view1"></my-view1>
-          <my-view2 name="view2"></my-view2>
+          <my-view2 name="view2" id="claimsPage"></my-view2>
           <my-view3 name="view3"></my-view3>
+          <my-claim-detail name="claim-detail"></my-claim-detail>
           <my-view404 name="view404"></my-view404>
         </iron-pages>
       </app-header-layout>
@@ -125,7 +142,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         token: {
           type: String,
           observer: '_tokenChanged'
-        }
+        },
+        _status: {
+          type: Boolean,
+          value: true,
+          statePath: 'loggedIn',
+        },
       },
       actions: {
         restore: function (initialState) {
@@ -133,7 +155,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             type: 'RESTORE_CACHED',
             cached: initialState
           }
-        }
+        },
+        logOut: function() {
+          return {
+            type: 'LOG_OUT',
+          };
+        },
+      },
+      _logOut: function () {
+        this.dispatch('logOut');
       },
       handleMessage: function (message){
         console.log(message);
@@ -170,6 +200,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Load page import on demand. Show 404 page if fails
         var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
         this.importHref(resolvedPageUrl, null, this._showPage404, true);
+        if (page === 'view2') {
+          if (this.$.claimsPage && this.$.claimsPage.fetchClaims) {
+            this.$.claimsPage.fetchClaims();
+          }
+        }
       },
 
       _showPage404: function() {
