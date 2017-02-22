@@ -1,0 +1,73 @@
+<link rel="import" href="../store/redux-store.html">
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="../behaviors/claimant-api-behavior.html">
+
+<dom-module id="login-screen">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+
+                padding: 10px;
+            }
+
+
+        </style>
+
+        <paper-card id="approved_payment" >
+
+            <div class="card-actions">
+                <paper-button on-tap="_approvedButton">Approve payment</paper-button>
+                <paper-button on-tap="_rejectButton">Reject payment</paper-button>
+
+
+            </div>
+        </paper-card>
+
+
+    </template>
+
+    <script>
+        /* global ReduxBehavior */
+        Polymer({
+            is: 'approved-button',
+            behaviors: [ReduxBehavior, ClaimantAPIBehavior],
+            actions: {
+
+            },
+            properties: {
+                token: {
+                    type: String,
+                    statePath: 'token',
+                },
+                claimId:{
+                    type: String,
+                },
+                username: {
+                    type: String,
+                    statePath: 'username' ,
+                }
+            },
+
+
+            ready: function () {
+            },
+
+            _approvedButton: function (){
+                ClaimantAPIBehavior.approvedPayment(claimId,token,username,true)
+
+
+                },
+
+            _rejectButton: function (){
+                ClaimantAPIBehavior.approvedPayment(claimId,token,username,false)
+
+            }
+
+        });
+    </script>
+</dom-module>
