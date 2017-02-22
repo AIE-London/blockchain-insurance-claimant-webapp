@@ -21,6 +21,12 @@ const generateServiceWorker = require('polymer-build').generateServiceWorker;
 
 
 var isWin = /^win/.test(process.platform);
+function waitFor(stream) {
+    return new Promise((resolve, reject) => {
+        stream.on('end', resolve);
+        stream.on('error', reject);
+    });
+}
 
 gulp.spawnCmd = function (command) {
     if (isWin){
@@ -115,17 +121,15 @@ gulp.task('build', [], function (onComplete) {
     stream = stream.pipe(project.bundler);
     console.log("BUNDLING");
     stream.pipe(gulp.dest('production-build/'));
-
-    generateServiceWorker({
-        buildRoot: 'production-build/',
-        project: project,
-        bundled: true, // set if `project.bundler` was used
-        swPrecacheConfig: {
-            // See https://github.com/GoogleChrome/sw-precache#options-parameter for all supported options
-            navigateFallback: '/index.html',
-        }
-    }).then(() => {
-        console.log("SW-Generated");
-        onComplete();
+    waitFor(stream).then(function () {
+        generateServiceWorker({
+            buildRoot: 'production-build/',
+            project: project,
+            bundled: true, // set if `project.bundler` was used
+            swPrecacheConfig: require('./sw-precache-config.js')
+        }).then(() => {
+            console.log("SW-Generated");
+            onComplete();
+        });
     });
 });
