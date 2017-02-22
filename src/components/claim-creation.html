@@ -108,7 +108,7 @@
                 return date.toISOString().substring(0, 10);
             },
             _createClaim: function() {
-                this._claim().createClaim(this.token,"P1",this.description, this._processDate(this.date), this.typeOptions[this.type]).then(function (token) {
+                this._claim().createClaim(this.token,this._getIdForPolicy(this.policy),this.description, this._processDate(this.date), this.typeOptions[this.type]).then(function (token) {
                     console.log(token);
                 }, function (error) {
                     console.error(error);
