@@ -222,10 +222,10 @@
             },
             _claimIsWaitingForUser: function (currentState) {
                 if (currentState === "awaiting_claimant_confirmation") {
-                    true
+                    return true;
                 }
                 else {
-                    false
+                    return false;
                 }
             },
 
