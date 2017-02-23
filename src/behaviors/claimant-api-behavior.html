@@ -83,7 +83,7 @@
                     let headers = new Headers();
                     headers.append("authorization", "bearer " + token);
                     headers.append("Content-Type", "application/json");
-                    return fetch(_endpoint + 'claimant/DanCotton/claim',{
+                    return fetch(_endpoint + '/claimant/DanCotton/claim',{
                         method: 'POST',
                         headers: headers,
                         body: JSON.stringify({
