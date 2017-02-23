@@ -22,10 +22,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="./store/redux-store.html">
+<!--
 <link rel="import" href="../bower_components/socket-io/socket-io.html">
+-->
 
 <link rel="import" href="./icons/myIcons.html">
-
 <dom-module id="my-app">
   <template>
     <style>
@@ -67,7 +68,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         opacity: 0.3;
       }
     </style>
+<!--
     <socket-io id="socket" endpoint="https://blockchain-insurance.eu-gb.mybluemix.net" events="[[events]]"></socket-io>
+-->
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
@@ -105,12 +108,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </app-header>
 
         <iron-pages
+            id="pages"
             selected="[[page]]"
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
           <my-view1 name="view1"></my-view1>
-          <my-view2 name="view2" id="claimsPage"></my-view2>
           <my-view3 name="view3"></my-view3>
           <my-claim-detail name="claim-detail"></my-claim-detail>
           <my-view404 name="view404"></my-view404>
@@ -163,6 +166,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
       },
       _logOut: function () {
+        this.$.pages.selectIndex(0);
         this.dispatch('logOut');
       },
       handleMessage: function (message){
@@ -179,7 +183,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }, function(err) {
           // permission was denied
         });
-          this.$.socket.connect();
+          //this.$.socket.connect();
       },
       _tokenChanged: function (){
         console.log(this.token);

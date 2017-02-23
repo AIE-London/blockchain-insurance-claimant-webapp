@@ -24,7 +24,6 @@
         <paper-card id="claim-creation" >
             <div class="card-content">
 
-
                 <h2>Claim  data</h2>
                 <paper-dropdown-menu label="Claim type">
                     <paper-listbox id = "listBox" class="dropdown-content" selected = "{{type}}">
@@ -37,13 +36,22 @@
 
                 <paper-textarea label="Description of incident" value = "{{description}}"></paper-textarea>
 
+                <paper-dropdown-menu label="Policy">
+                    <paper-listbox id = "listBox2" class="dropdown-content" selected = "{{policy}}">
+                        <template is="dom-repeat" items="{{availablePolicies}}">
+                            <paper-item>{{item.relations.vehicle}}</paper-item>
+                        </template>
+
+                    </paper-listbox>
+                </paper-dropdown-menu>
+
+
                 <h4>Incident date</h4>
                 <paper-dialog id="dialog" class="paper-date-picker-dialog" modal
                               on-iron-overlay-closed="dismissDialog">
                     <paper-date-picker id="picker" date="{{date}}" dateFormat="yyyy-MM-dd" ></paper-date-picker>
+
                 </paper-dialog>
-
-
 
             </div>
             <div class="card-actions">
@@ -58,6 +66,14 @@
         /* global ReduxBehavior */
         Polymer({
             is: 'claim-creation',
+            actions: {
+                setPolicies: function(policies) {
+                    return {
+                        type: 'SET_POLICIES',
+                        policies:policies,
+                    };
+                },
+            },
             behaviors: [ReduxBehavior, ClaimantAPIBehavior],
             properties: {
                 transactions: {
@@ -72,19 +88,30 @@
                     type: Array,
                     value: ['Single Party',
                             'Multiple Party']
-                }
+                },
+                availablePolicies: {
+                    type: Array,
+                    statePath: 'policies'
+                },
+
+                username: {
+                    type: String,
+                    statePath: 'username',
+                },
             },
 
             ready: function () {
-
+                var _this = this;
+                this._claimantApi().getAllPolicies(this.username, this.token).then( function(policies) {
+                    _this.dispatch('setPolicies', policies.results);
+                })
             },
             _processDate: function(date) {
                 return date.toISOString().substring(0, 10);
             },
             _createClaim: function() {
                 var _this = this
-                this._claimantApi().createClaim(this.token,"P1",this.description, this._processDate(this.date),
-                    this.typeOptions[this.type]).then(function (token) {
+                this._claimantApi().createClaim(this.token,this._getIdForPolicy(this.policy),this.description, this._processDate(this.date), this.typeOptions[this.type], this.username).then(function (token) {
                     console.log(token);
                     _this.openToast()
                 }, function (error) {
@@ -93,6 +120,9 @@
             },
             openToast: function() {
                 this.$.toast.open();
+            },
+            _getIdForPolicy: function(index) {
+                return this.availablePolicies[index].id
             }
 
         });
