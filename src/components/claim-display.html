@@ -3,6 +3,12 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tab.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/slide-left-animation.html">
+<link rel="import" href="../../bower_components/neon-animation/animations/slide-from-right-animation.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../behaviors/claimant-api-behavior.html">
 <link rel="import" href="status-bar.html">
 
@@ -11,22 +17,83 @@
         <style include="shared-styles">
             :host {
                 display: block;
-
+            }
+            main {
+                width: 100%;
                 padding: 10px;
             }
+            .page {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            p > strong {
+                margin-right: 2em;
+            }
+            paper-card {
+                width: 100%;
+                max-width: 750px;
+            }
+            paper-tabs {
+                background: var(--app-primary-color);
+                width: 100%;
+                color: #fff;
+                --paper-tabs-selection-bar-color: var(--app-highlight-color);
+            }
+            .data_grid {
+                display: flex;
+                flex-direction:row;
+            }
+            .data_grid > div {
+                flex: 1;
+            }
+            strong {
+                margin-right: 2em;
+            }
         </style>
+        <paper-tabs selected="{{_tab}}" scrollable>
+            <paper-tab>Overview</paper-tab>
+            <template is="dom-repeat" items="[[_getTabs(_tabValues, _claim)]]">
 
-        <paper-card id="claim_display" heading="Claim #[[_claim.id]]">
-            <div class="card-content">
-                <div><strong>Description:</strong> [[_claim.details.description]]</div>
-                <div><strong>Related Policy:</strong> [[_claim.relations.relatedPolicy]]</div>
-                <div><strong>Incident Date:</strong> [[_claim.details.incident.date]]</div>
-                <div><strong>Incident Type:</strong> [[_claim.details.incident.type]]</div>
-                <status-bar current-stage="[[_claim.details.status]]"></status-bar>
+                <paper-tab>[[item]]</paper-tab>
+            </template>
+        </paper-tabs>
+        <main>
+            <h1>Claim #[[_claim.id]]</h1>
+            <neon-animated-pages selected="[[_tab]]" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
+                <div class="page">
+                    <paper-card id="claim_display" heading="Summary">
+                        <div class="card-content">
+                            <div><strong>Description:</strong> [[_claim.details.description]]</div>
+                            <div><strong>Related Policy:</strong> [[_claim.relations.relatedPolicy]]</div>
+                            <div><strong>Incident Date:</strong> [[_claim.details.incident.date]]</div>
+                            <div><strong>Incident Type:</strong> [[_claim.details.incident.type]]</div>
+                            <status-bar current-stage="[[_claim.details.status]]"></status-bar>
+                        </div>
+                    </paper-card>
+                </div>
+                <div class="page">
+                    <paper-card id="garage_report_display" heading="Garage Report">
+                        <div class="card-content">
+                            <div class="data_grid">
+                                <div>
+                                    <p><strong>Notes:</strong><i>[[_claim.details.report.notes]]</i></p>
+                                    <p><strong>Author:</strong><i>[[_claim.details.report.garage]]</i></p>
+                                    <p><strong>Repair Estimate:</strong><i>£[[_claim.details.report.estimate]]</i></p>
+                                    <p><strong>[[_getIsWriteOffText(_claim.details.report.writeOff)]]</strong><i><paper-checkbox checked="[[_claim.details.report.writeOff]]" disabled></paper-checkbox></p>
 
-            </div>
-
-        </paper-card>
+                                </div>
+                            </div>
+                            <p>
+                                Please note, that this estimate does not guarantee the total sum will be offered by your insurer. Please await a payment decision.
+                            </p>
+                        </div>
+                    </paper-card>
+                </div>
+                <div>Three</div>
+            </neon-animated-pages>
+        </main>
 
 
     </template>
@@ -42,6 +109,22 @@
                     required: true,
                     observer: '_claimIdChanged'
                 },
+                _tab: {
+                    type: Number,
+                    value: 0
+                },
+                _tabValues: {
+                    type: Array,
+                    value: ['Garage Report', 'Insurer Decision', 'Payments']
+                },
+                _states: {
+                    type: Array,
+                    value: [
+                        'pending_decision',
+                        'awaiting_claimant_confirmation',
+                        'settled'
+                    ],
+                },
                 _claim: {
                     type: Object,
                     value: {}
@@ -50,6 +133,19 @@
             _claimIdChanged: function () {
                 this._claim = this.getState().claims[this.claimId];
                 console.log(this._claim);
+            },
+            _getIsWriteOffText: function (isWriteOff) {
+              return isWriteOff ? 'Car is a write off.' : 'Car is not a write off';
+            },
+            _getTabs: function (tabs, claim) {
+                var _this = this;
+                return this._tabValues.filter(function (tab) {
+                    if (claim && claim.details && claim.details.status) {
+                        return _this._tabValues.indexOf(tab) <= _this._states.indexOf(claim.details.status);
+                    } else {
+                        return false;
+                    }
+                });
             },
             ready: function () {
             }

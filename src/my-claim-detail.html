@@ -18,7 +18,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             :host {
                 display: block;
 
-                padding: 10px;
             }
         </style>
         <app-location route="{{route}}"></app-location>
@@ -27,7 +26,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 pattern="/claim-detail/:claimId"
                 data="{{_routeData}}"
                 tail="{{subroute}}"></app-route>
-        <h1 class="claim_created">Claim #[[_routeData.claimId]]</h1>
         <claim-display claim-id="[[_routeData.claimId]]"></claim-display>
     </template>
 
