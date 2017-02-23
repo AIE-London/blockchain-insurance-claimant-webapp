@@ -54,7 +54,6 @@
 
             </div>
             <div class="card-actions">
-
                 <paper-button on-tap="_createClaim" autofocus>Submit</paper-button>
             </div>
         </paper-card>
@@ -109,8 +108,9 @@
                 return date.toISOString().substring(0, 10);
             },
             _createClaim: function() {
-                this._claimantApi().createClaim(this.token,this._getIdForPolicy(this.policy),this.description, this._processDate(this.date), this.typeOptions[this.type], this.username).then(function (token) {
-                    console.log(token);
+                var that = this;
+                this._claimantApi().createClaim(this.token,this._getIdForPolicy(this.policy),this.description, this._processDate(this.date), this.typeOptions[this.type], this.username).then(function () {
+                    that.fire('submit', {});
                 }, function (error) {
                     console.error(error);
                 });
@@ -118,7 +118,6 @@
             _getIdForPolicy: function(index) {
                 return this.availablePolicies[index].id
             }
-
         });
     </script>
 </dom-module>
