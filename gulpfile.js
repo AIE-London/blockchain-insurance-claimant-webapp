@@ -131,7 +131,7 @@ gulp.task('build', [], function (onComplete) {
 
     stream = stream.pipe(project.bundler);
     console.log("BUNDLING");
-    stream.pipe(gulp.dest('production-build/'));
+    stream = stream.pipe(gulp.dest('production-build/'));
     waitFor(stream).then(function () {
         var swPreCache = require('./sw-precache-config.js');
         console.log(swPreCache);

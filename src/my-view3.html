@@ -28,13 +28,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
 
-    <claim-creation></claim-creation>
+    <claim-creation on-submit="_handleSubmit"></claim-creation>
     <claim-display claim-id="4"></claim-display>
   </template>
 
   <script>
     Polymer({
       is: 'my-view3',
+      _handleSubmit: function () {
+        this.fire('submit', {});
+      }
     });
   </script>
 </dom-module>
