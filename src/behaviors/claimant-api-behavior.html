@@ -74,7 +74,7 @@
                     headers.append("Content-Type", "application/json");
                     headers.append("authorization", "bearer " + token);
                     return fetch(_endpoint + "/claimant/" + username + "/claim/" + claimId + "/payout/agreement", {
-                        method: 'GET',
+                        method: 'POST',
                         headers: headers,
                         body: JSON.stringify({
                             "agreement": agreement
