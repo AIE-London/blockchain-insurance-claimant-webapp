@@ -33,6 +33,7 @@
             }
             paper-card {
                 width: 100%;
+                margin-right: 10px;
                 max-width: 750px;
             }
             paper-tabs {
@@ -82,7 +83,6 @@
                                     <p><strong>Author:</strong><i>[[_claim.details.report.garage]]</i></p>
                                     <p><strong>Repair Estimate:</strong><i>£[[_claim.details.report.estimate]]</i></p>
                                     <p><strong>[[_getIsWriteOffText(_claim.details.report.writeOff)]]</strong><i><paper-checkbox checked="[[_claim.details.report.writeOff]]" disabled></paper-checkbox></p>
-
                                 </div>
                             </div>
                             <p>
@@ -91,7 +91,22 @@
                         </div>
                     </paper-card>
                 </div>
-                <div>Three</div>
+                <div class="page">
+                    <paper-card id="insurer_decision_display" heading="Insurer Decision">
+                        <div class="card-content">
+                            <div class="data_grid">
+                                <div>
+                                    <p><strong>Car Value Estimate:</strong><i>£[[_getCarValue(_claim.details.settlement)]]</i></p>
+                                    <p><strong>Our Decision:</strong><i>[[_getDecisionText(_claim.details.settlement.decision)]]</i></p>
+                                    <template is="dom-if" if="_policy">
+                                        <p><strong>Policy Excess:</strong><i>£[[_policy.details.excess]]</i></p>
+                                        <p><strong>Value (Excess Deducted):</strong><i>£[[_deductExcess(_claim.details.settlement, _policy.details.excess)]]</i></p>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </paper-card>
+                </div>
             </neon-animated-pages>
         </main>
 
@@ -117,6 +132,9 @@
                     type: Array,
                     value: ['Garage Report', 'Insurer Decision', 'Payments']
                 },
+                _policy: {
+                    value: null
+                },
                 _states: {
                     type: Array,
                     value: [
@@ -125,14 +143,45 @@
                         'settled'
                     ],
                 },
+                _policyIsOk: function (policy) {
+                    return true;
+                },
+                _decisionsText: {
+                    type: Array,
+                    value: ['As your vehicle is a write off, we will pay the agreed amount and not repair the vehicle.', 'Your claim is a liability claim', 'You are not at fault.']
+                },
+                _decisions: {
+                    type: Array,
+                    value: ['total_loss', 'liability', 'not_at_fault']
+                },
                 _claim: {
                     type: Object,
                     value: {}
                 }
             },
+            _getCarValue: function (settlement) {
+                if (settlement) {
+                    return settlement['totalLoss'].carValueEstimate;
+                } else {
+                    return 0;
+                }
+            },
+            _deductExcess: function (settlement, excess) {
+                return this._getCarValue(settlement) - excess;
+            },
+            _getDecisionText: function (decision) {
+                return this._decisionsText[this._decisions.indexOf(decision)];
+            },
             _claimIdChanged: function () {
                 this._claim = this.getState().claims[this.claimId];
-                console.log(this._claim);
+                if (this.getState().policies && this.getState().policies.length > 0) {
+                    var _this = this;
+                    this._policy = this.getState().policies.find(function (policy) {
+                       return policy.id === _this._claim.relations.relatedPolicy;
+                    });
+                    console.log(this._claim);
+                    console.log(this._policy);
+                }
             },
             _getIsWriteOffText: function (isWriteOff) {
               return isWriteOff ? 'Car is a write off.' : 'Car is not a write off';
