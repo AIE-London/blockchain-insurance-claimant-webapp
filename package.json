@@ -12,7 +12,9 @@
     "gulp-babel": "^6.1.2",
     "gulp-crisper": "^1.1.0",
     "gulp-if": "^2.0.2",
-    "gulp-sourcemaps": "^2.4.0"
+    "gulp-ignore": "^2.0.2",
+    "gulp-sourcemaps": "^2.4.0",
+    "polymer-build": "^0.8.1"
   },
   "scripts": {
     "lint": "eslint . --ext js,html --ignore-path .gitignore",
@@ -22,6 +24,8 @@
     "build": "npm run clean && gulp build"
   },
   "dependencies": {
+    "merge-stream": "^1.0.1",
+    "polymer-build": "^0.8.1",
     "redux": "^3.6.0"
   }
 }
