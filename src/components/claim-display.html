@@ -52,6 +52,10 @@
             strong {
                 margin-right: 2em;
             }
+            .page > .title {
+                width: 100%;
+                text-align: left;
+            }
         </style>
         <paper-tabs selected="{{_tab}}" scrollable>
             <paper-tab>Overview</paper-tab>
@@ -77,14 +81,10 @@
                 <div class="page">
                     <paper-card id="garage_report_display" heading="Garage Report">
                         <div class="card-content">
-                            <div class="data_grid">
-                                <div>
-                                    <p><strong>Notes:</strong><i>[[_claim.details.report.notes]]</i></p>
-                                    <p><strong>Author:</strong><i>[[_claim.details.report.garage]]</i></p>
-                                    <p><strong>Repair Estimate:</strong><i>£[[_claim.details.report.estimate]]</i></p>
-                                    <p><strong>[[_getIsWriteOffText(_claim.details.report.writeOff)]]</strong><i><paper-checkbox checked="[[_claim.details.report.writeOff]]" disabled></paper-checkbox></p>
-                                </div>
-                            </div>
+                            <p><strong>Notes:</strong><i>[[_claim.details.report.notes]]</i></p>
+                            <p><strong>Author:</strong><i>[[_claim.details.report.garage]]</i></p>
+                            <p><strong>Repair Estimate:</strong><i>£[[_claim.details.report.estimate]]</i></p>
+                            <p><strong>[[_getIsWriteOffText(_claim.details.report.writeOff)]]</strong><paper-checkbox checked="[[_claim.details.report.writeOff]]" disabled></paper-checkbox></p>
                             <p>
                                 Please note, that this estimate does not guarantee the total sum will be offered by your insurer. Please await a payment decision.
                             </p>
@@ -98,7 +98,7 @@
                                 <div>
                                     <p><strong>Car Value Estimate:</strong><i>£[[_getCarValue(_claim.details.settlement)]]</i></p>
                                     <p><strong>Our Decision:</strong><i>[[_getDecisionText(_claim.details.settlement.decision)]]</i></p>
-                                    <template is="dom-if" if="_policy">
+                                    <template is="dom-if" if="[[_policy]]">
                                         <p><strong>Policy Excess:</strong><i>£[[_policy.details.excess]]</i></p>
                                         <p><strong>Value (Excess Deducted):</strong><i>£[[_deductExcess(_claim.details.settlement, _policy.details.excess)]]</i></p>
                                     </template>
@@ -106,6 +106,19 @@
                             </div>
                         </div>
                     </paper-card>
+                </div>
+                <div class="page">
+                    <h3 class="title">Payments</h3>
+                    <iron-list items="[[_claim.details.settlement.payments]]">
+                        <template>
+                            <paper-item class$="[[item.status]]">
+                                <paper-item-body two-line>
+                                    <div>Status [[item.status]] - Value £[[item.amount]]</div>
+                                    <div secondary>Recipient: [[item.recipient]]</div>
+                                </paper-item-body>
+                            </paper-item>
+                        </template>
+                    </iron-list>
                 </div>
             </neon-animated-pages>
         </main>
@@ -179,8 +192,11 @@
                     this._policy = this.getState().policies.find(function (policy) {
                        return policy.id === _this._claim.relations.relatedPolicy;
                     });
-                    console.log(this._claim);
-                    console.log(this._policy);
+                    this._claim.details.settlement.payments = [{
+                        recipient: 'Dan',
+                        amount: 3000,
+                        status: 'paid'
+                    }];
                 }
             },
             _getIsWriteOffText: function (isWriteOff) {
