@@ -62,7 +62,7 @@
         <div class="flex-container">
             <template is="dom-repeat" items="[[_states]]">
                 <div class = "outer">
-                    <div  class$ = "[[_getStyle(item)]]">
+                    <div  class$ = "[[_getStyle(item, currentStage)]]">
                         <iron-icon icon="[[_getIcon(item)]]"></iron-icon>
                     </div>
                     <p>[[_getName(item)]]</p>
@@ -124,10 +124,10 @@
             _getIcon: function(state) {
                 return "myIcons:" + this._stateIcons[this._states.indexOf(state)];
             },
-            _getStyle: function(status) {
-                if (this.currentStage !== null && this.currentStage === status) {
+            _getStyle: function(status, currentStage) {
+                if (currentStage !== null && currentStage === status) {
                     return "active circleBase inner";
-                } else if (this.currentStage !== null && (this._states.indexOf(status) < this._states.indexOf(this.currentStage))) {
+                } else if (currentStage !== null && (this._states.indexOf(status) < this._states.indexOf(currentStage))) {
                     return "previouslyActive circleBase inner";
                 } else {
                     return "inactive circleBase inner";
