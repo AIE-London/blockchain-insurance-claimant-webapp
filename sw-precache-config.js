@@ -15,7 +15,7 @@ module.exports = {
     '/node_modules/redux/dist/redux.min.js',
     '/index.html',
     '/src/**/*',
-    '/bower_components/**/*',
+    '/src/*.html',
     '/manifest.json',
     '/bower_components/webcomponentsjs/webcomponents-lite.min.js'
   ],
