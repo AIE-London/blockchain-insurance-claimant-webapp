@@ -11,6 +11,8 @@
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../behaviors/claimant-api-behavior.html">
 <link rel="import" href="status-bar.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="approved-button.html">
 
 <dom-module id="claim-display">
     <template>
@@ -76,6 +78,9 @@
                             <div><strong>Incident Type:</strong> [[_claim.details.incident.type]]</div>
                             <status-bar current-stage="[[_claim.details.status]]"></status-bar>
                         </div>
+                        <template is="dom-if" if="[[_claimIsWaitingForUser(_claim.details.status)]]">
+                            <approved-button claim-id="[[_claim.id]]"></approved-button>
+                        </template>
                     </paper-card>
                 </div>
                 <div class="page">
@@ -103,6 +108,9 @@
                                         <p><strong>Value (Excess Deducted):</strong><i>£[[_deductExcess(_claim.details.settlement, _policy.details.excess)]]</i></p>
                                     </template>
                                 </div>
+                                <template is="dom-if" if="[[_claimIsWaitingForUser(_claim.details.status)]]">
+                                    <approved-button claim-id="[[_claim.id]]"></approved-button>
+                                </template>
                             </div>
                         </div>
                     </paper-card>
@@ -130,7 +138,7 @@
         /* global ReduxBehavior */
         Polymer({
             is: 'claim-display',
-            behaviors: [ReduxBehavior],
+            behaviors: [ReduxBehavior, ClaimantAPIBehavior],
             properties: {
                 claimId: {
                     type: String,
@@ -212,8 +220,18 @@
                     }
                 });
             },
-            ready: function () {
-            }
+            _claimIsWaitingForUser: function (currentState) {
+                if (currentState === "awaiting_claimant_confirmation") {
+                    true
+                }
+                else {
+                    false
+                }
+            },
+
+            _claimIdChanged: function () {
+                this._claim = this.getState().claims[this.claimId];
+            },
         });
     </script>
 </dom-module>

@@ -9,6 +9,7 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../behaviors/claimant-api-behavior.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 
 <dom-module id="claim-creation">
     <template>
@@ -55,6 +56,7 @@
             </div>
             <div class="card-actions">
                 <paper-button on-tap="_createClaim" autofocus>Submit</paper-button>
+                <paper-toast id="toast"  horizontal-align="right" text="Thank you for submitting your claim"></paper-toast>
             </div>
         </paper-card>
 
@@ -108,12 +110,16 @@
                 return date.toISOString().substring(0, 10);
             },
             _createClaim: function() {
-                var that = this;
-                this._claimantApi().createClaim(this.token,this._getIdForPolicy(this.policy),this.description, this._processDate(this.date), this.typeOptions[this.type], this.username).then(function () {
-                    that.fire('submit', {});
+                var _this = this
+                this._claimantApi().createClaim(this.token,this._getIdForPolicy(this.policy),this.description, this._processDate(this.date), this.typeOptions[this.type], this.username).then(function (token) {
+                    _this.openToast();
+                    _this.fire('submit', {});
                 }, function (error) {
                     console.error(error);
                 });
+            },
+            openToast: function() {
+                this.$.toast.open();
             },
             _getIdForPolicy: function(index) {
                 return this.availablePolicies[index].id
