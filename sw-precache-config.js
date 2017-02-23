@@ -14,8 +14,8 @@ module.exports = {
   staticFileGlobs: [
     '/node_modules/redux/dist/redux.min.js',
     '/index.html',
+    '/src/*',
     '/src/**/*',
-    '/src/*.html',
     '/manifest.json',
     '/bower_components/webcomponentsjs/webcomponents-lite.min.js'
   ],
