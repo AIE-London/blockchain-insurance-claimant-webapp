@@ -17,8 +17,8 @@ var sourcesHtmlSplitter = new HtmlSplitter();
 
 var project = new PolymerProject(require('./polymer.json'));
 
-const generateServiceWorker = require('polymer-build').generateServiceWorker;
-
+var generateServiceWorker = require('polymer-build').generateServiceWorker;
+var addServiceWorker = require('polymer-build').addServiceWorker;
 
 var isWin = /^win/.test(process.platform);
 function waitFor(stream) {
@@ -114,6 +114,17 @@ gulp.task('serve', ['copy-temp'], function (onComplete) {
 });
 
 
+function writeBundledServiceWorker(project, swPreCache) {
+    // On windows if we pass the path with back slashes the sw-precache node module is not going
+    // to strip the build/bundled or build/unbundled because the path was passed in with backslash.
+    return addServiceWorker({
+        project: project,
+        buildRoot: 'production-build/',
+        swPrecacheConfig: swPreCache,
+        bundled: true
+    });
+}
+
 gulp.task('build', [], function (onComplete) {
     var stream = mergeStream(gulp.buildSources(project.sources()), project.dependencies());
     console.log("Sources Merged");
@@ -122,13 +133,11 @@ gulp.task('build', [], function (onComplete) {
     console.log("BUNDLING");
     stream.pipe(gulp.dest('production-build/'));
     waitFor(stream).then(function () {
-        generateServiceWorker({
-            buildRoot: 'production-build/',
-            project: project,
-            bundled: true, // set if `project.bundler` was used
-            swPrecacheConfig: require('./sw-precache-config.js')
-        }).then(() => {
+        var swPreCache = require('./sw-precache-config.js');
+        console.log(swPreCache);
+        writeBundledServiceWorker(project, swPreCache).then(() => {
             console.log("SW-Generated");
+            console.log("Build Complete!");
             onComplete();
         });
     });
