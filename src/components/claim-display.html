@@ -5,6 +5,8 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../behaviors/claimant-api-behavior.html">
 <link rel="import" href="status-bar.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="approved-button.html">
 
 <dom-module id="claim-display">
     <template>
@@ -14,6 +16,7 @@
 
                 padding: 10px;
             }
+
         </style>
 
         <paper-card id="claim_display" heading="Claim #[[_claim.id]]">
@@ -23,6 +26,11 @@
                 <div><strong>Incident Date:</strong> [[_claim.details.incident.date]]</div>
                 <div><strong>Incident Type:</strong> [[_claim.details.incident.type]]</div>
                 <status-bar current-stage="[[_claim.details.status]]"></status-bar>
+
+
+                <template is="dom-if" if="[[_claimIsWaitingForUser(_claim.details.status)]]">
+                    <approved-button claim-id="[[_claim.id]]"></approved-button>
+                </template>
 
             </div>
 
@@ -35,7 +43,7 @@
         /* global ReduxBehavior */
         Polymer({
             is: 'claim-display',
-            behaviors: [ReduxBehavior],
+            behaviors: [ReduxBehavior, ClaimantAPIBehavior],
             properties: {
                 claimId: {
                     type: String,
@@ -47,9 +55,19 @@
                     value: {}
                 }
             },
+
+            _claimIsWaitingForUser: function (currentState) {
+                if (currentState === "awaiting_claimant_confirmation") {
+                    true
+                }
+                else {
+                    false
+                }
+            },
+
             _claimIdChanged: function () {
                 this._claim = this.getState().claims[this.claimId];
-            }
+            },
         });
     </script>
 </dom-module>
