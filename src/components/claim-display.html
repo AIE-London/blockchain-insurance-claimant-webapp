@@ -200,11 +200,6 @@
                     this._policy = this.getState().policies.find(function (policy) {
                        return policy.id === _this._claim.relations.relatedPolicy;
                     });
-                    this._claim.details.settlement.payments = [{
-                        recipient: 'Dan',
-                        amount: 3000,
-                        status: 'paid'
-                    }];
                 }
             },
             _getIsWriteOffText: function (isWriteOff) {
@@ -222,10 +217,10 @@
             },
             _claimIsWaitingForUser: function (currentState) {
                 if (currentState === "awaiting_claimant_confirmation") {
-                    true
+                    return true;
                 }
                 else {
-                    false
+                    return false;
                 }
             },
 
