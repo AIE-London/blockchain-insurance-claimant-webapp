@@ -33,7 +33,6 @@ var reducers = function (state, action) {
             break;
         case 'ADD_CLAIM':
             let addClaimObj = {};
-
             addClaimObj[action.claimId] = action.claim;
 
             newState = Object.assign({}, state, {
