@@ -3,8 +3,6 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
-<link rel="import" href="../../bower_components/paper-tabs/paper-tab.html">
 <link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/slide-left-animation.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/slide-from-right-animation.html">
@@ -38,12 +36,6 @@
                 margin-right: 10px;
                 max-width: 750px;
             }
-            paper-tabs {
-                background: var(--app-primary-color);
-                width: 100%;
-                color: #fff;
-                --paper-tabs-selection-bar-color: var(--app-highlight-color);
-            }
             .data_grid {
                 display: flex;
                 flex-direction:row;
@@ -59,15 +51,7 @@
                 text-align: left;
             }
         </style>
-        <paper-tabs selected="{{_tab}}" scrollable>
-            <paper-tab>Overview</paper-tab>
-            <template is="dom-repeat" items="[[_getTabs(_tabValues, _claim)]]">
-
-                <paper-tab>[[item]]</paper-tab>
-            </template>
-        </paper-tabs>
         <main>
-            <h1>Claim #[[_claim.id]]</h1>
             <neon-animated-pages selected="[[_tab]]" entry-animation="slide-from-right-animation" exit-animation="slide-left-animation">
                 <div class="page">
                     <paper-card id="claim_display" heading="Summary">
@@ -147,7 +131,7 @@
                 },
                 _tab: {
                     type: Number,
-                    value: 0
+                    statePath: 'tabSelected'
                 },
                 _tabValues: {
                     type: Array,
@@ -201,6 +185,11 @@
                        return policy.id === _this._claim.relations.relatedPolicy;
                     });
                 }
+                var tabs = this._getTabs([], this._claim);
+                this.dispatch({
+                    type: 'SET_TABS_OPTIONS',
+                    options: tabs
+                })
             },
             _getIsWriteOffText: function (isWriteOff) {
               return isWriteOff ? 'Car is a write off.' : 'Car is not a write off';
@@ -224,9 +213,6 @@
                 }
             },
 
-            _claimIdChanged: function () {
-                this._claim = this.getState().claims[this.claimId];
-            },
         });
     </script>
 </dom-module>

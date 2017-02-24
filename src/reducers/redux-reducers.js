@@ -4,7 +4,10 @@ const initialState = {
     count: 0,
     transactions: [],
     loggedIn: false,
-    policies: []
+    policies: [],
+    isLoading: false,
+    tabSelected: 0,
+    tabsOptions: []
 };
 var reducers = function (state, action) {
     var save = true;
@@ -53,6 +56,17 @@ var reducers = function (state, action) {
             }, {});
             newState = Object.assign({}, state, {
                 claims: newClaimsObject,
+                isLoading: false
+            });
+            break;
+        case 'SET_TABS_SELECTED':
+            newState = Object.assign({}, state, {
+                tabSelected: action.selected
+            });
+            break;
+        case 'SET_TABS_OPTIONS':
+            newState = Object.assign({}, state, {
+                tabsOptions: action.options
             });
             break;
         case 'SET_TOKEN':
@@ -62,7 +76,12 @@ var reducers = function (state, action) {
                 loggedIn: true,
             });
             break;
-
+        case 'SET_LOADING':
+            console.log(action.isLoading);
+            newState = Object.assign({}, state, {
+                isLoading: action.isLoading
+            });
+            break;
         case 'LOG_OUT':
             newState = Object.assign({},
             initialState );
