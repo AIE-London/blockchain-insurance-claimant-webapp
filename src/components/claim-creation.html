@@ -110,7 +110,7 @@
                 return date.toISOString().substring(0, 10);
             },
             _createClaim: function() {
-                var _this = this
+                var _this = this;
                 this._claimantApi().createClaim(this.token,this._getIdForPolicy(this.policy),this.description, this._processDate(this.date), this.typeOptions[this.type], this.username).then(function (token) {
                     _this.openToast();
                     _this.fire('submit', {});

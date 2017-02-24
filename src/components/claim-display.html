@@ -79,7 +79,7 @@
                             <status-bar current-stage="[[_claim.details.status]]"></status-bar>
                         </div>
                         <template is="dom-if" if="[[_claimIsWaitingForUser(_claim.details.status)]]">
-                            <approved-button claim-id="[[_claim.id]]"></approved-button>
+                            <approved-button claim-id="[[_claim.id]]" on-submit="_formSubmitted"></approved-button>
                         </template>
                     </paper-card>
                 </div>
@@ -179,6 +179,9 @@
                     type: Object,
                     value: {}
                 }
+            },
+            _formSubmitted: function (event) {
+                this.fire('submit', {});
             },
             _getCarValue: function (settlement) {
                 if (settlement) {
