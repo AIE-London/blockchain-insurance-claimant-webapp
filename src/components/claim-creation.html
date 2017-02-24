@@ -10,56 +10,71 @@
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../behaviors/claimant-api-behavior.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="./policy-display.html">
 
 <dom-module id="claim-creation">
     <template>
         <style include="shared-styles">
             :host {
                 display: block;
-
+                width: 100%;
+            }
+            main {
                 padding: 10px;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            main > * {
+                margin: 2em;
+            }
+            paper-card {
+                margin-bottom: 2em;
             }
         </style>
+        <main>
+            <paper-card id="claim-creation" >
+                <div class="card-content">
 
-        <paper-card id="claim-creation" >
-            <div class="card-content">
+                    <h2>Claim  data</h2>
+                    <paper-dropdown-menu label="Claim type">
+                        <paper-listbox id = "listBox" class="dropdown-content" selected = "{{type}}">
+                            <template is="dom-repeat" items="{{typeOptions}}">
+                                <paper-item>{{item}}</paper-item>
+                            </template>
 
-                <h2>Claim  data</h2>
-                <paper-dropdown-menu label="Claim type">
-                    <paper-listbox id = "listBox" class="dropdown-content" selected = "{{type}}">
-                        <template is="dom-repeat" items="{{typeOptions}}">
-                            <paper-item>{{item}}</paper-item>
-                        </template>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
 
-                    </paper-listbox>
-                </paper-dropdown-menu>
+                    <paper-textarea label="Description of incident" value = "{{description}}"></paper-textarea>
 
-                <paper-textarea label="Description of incident" value = "{{description}}"></paper-textarea>
+                    <paper-dropdown-menu label="Policy">
+                        <paper-listbox id = "listBox2" class="dropdown-content" selected = "{{policy}}">
+                            <template is="dom-repeat" items="{{availablePolicies}}">
+                                <paper-item>{{item.relations.vehicle}}</paper-item>
+                            </template>
 
-                <paper-dropdown-menu label="Policy">
-                    <paper-listbox id = "listBox2" class="dropdown-content" selected = "{{policy}}">
-                        <template is="dom-repeat" items="{{availablePolicies}}">
-                            <paper-item>{{item.relations.vehicle}}</paper-item>
-                        </template>
-
-                    </paper-listbox>
-                </paper-dropdown-menu>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
 
 
-                <h4>Incident date</h4>
-                <paper-dialog id="dialog" class="paper-date-picker-dialog" modal
-                              on-iron-overlay-closed="dismissDialog">
-                    <paper-date-picker id="picker" date="{{date}}" dateFormat="yyyy-MM-dd" ></paper-date-picker>
+                    <h4>Incident date</h4>
+                    <paper-dialog id="dialog" class="paper-date-picker-dialog" modal
+                                  on-iron-overlay-closed="dismissDialog">
+                        <paper-date-picker id="picker" date="{{date}}" dateFormat="yyyy-MM-dd" ></paper-date-picker>
 
-                </paper-dialog>
+                    </paper-dialog>
 
-            </div>
-            <div class="card-actions">
-                <paper-button on-tap="_createClaim" autofocus>Submit</paper-button>
-                <paper-toast id="toast"  horizontal-align="right" text="Thank you for submitting your claim"></paper-toast>
-            </div>
-        </paper-card>
-
+                </div>
+                <div class="card-actions">
+                    <paper-button on-tap="_createClaim" autofocus>Submit</paper-button>
+                    <paper-toast id="toast"  horizontal-align="right" text="Thank you for submitting your claim"></paper-toast>
+                </div>
+            </paper-card>
+            <policy-display policy-index="[[policy]]"></policy-display>
+        </main>
     </template>
 
     <script>
