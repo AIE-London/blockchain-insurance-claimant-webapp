@@ -159,6 +159,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             cached: initialState
           }
         },
+
+          pushToken: function (pushToken) {
+            return {
+                type: 'SET_PUSH_TOKEN',
+                pushToken: pushToken
+            }
+          },
+
         logOut: function() {
           return {
             type: 'LOG_OUT',
@@ -187,6 +195,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _tokenChanged: function (){
         console.log(this.token);
+        this.dispatch('pushToken', this.token);
       },
       observers: [
         '_routePageChanged(routeData.page)',
