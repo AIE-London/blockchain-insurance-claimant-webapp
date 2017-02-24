@@ -69,7 +69,7 @@
                 var _this = this;
                 this._claimantApi().approvedPayment(this.claimId,this.token,this.username,true).then(function () {
                     _this.openToast();
-                    this.fire('submit', {});
+                    _this.fire('submit', {});
                 });
             },
 
@@ -78,7 +78,7 @@
                 var _this = this;
                 this._claimantApi().approvedPayment(this.claimId,this.token,this.username,false).then(function () {
                     _this.openToast2();
-                    this.fire('submit', {});
+                    _this.fire('submit', {});
                 });
             },
 
