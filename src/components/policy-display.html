@@ -1,0 +1,78 @@
+<link rel="import" href="../store/redux-store.html">
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
+<dom-module id="policy-display">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+            }
+            paper-card {
+                min-width: 400px;
+            }
+            .grid {
+                display: flex;
+                flex-direction: row;
+                wrap: nowrap;
+                align-items: center;
+            }
+            .grid > div {
+                flex-grow: 1;
+            }
+        </style>
+        <main>
+            <paper-card id="garage_report_display" heading="My Policy">
+                <div class="card-content">
+                    <template is="dom-if" if="[[_policy.id]]">
+                        <div class="grid">
+                            <div>
+                                <p><strong>Policy ID:</strong></p>
+                                <p><strong>Start Date:</strong></p>
+                                <p><strong>End Date:</strong></p>
+                                <p><strong>Excess:</strong></p>
+                                <p><strong>Vehicle Registration:</strong></p>
+                            </div>
+                            <div>
+                                <p><i>[[_policy.id]]</i></p>
+                                <p><i>[[_policy.details.startDate]]</i></p>
+                                <p><i>[[_policy.details.endDate]]</i></p>
+                                <p><i>£[[_policy.details.excess]]</i></p>
+                                <p><i>[[_policy.relations.vehicle]]</i></p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </paper-card>
+        </main>
+
+
+    </template>
+
+    <script>
+        /* global ReduxBehavior */
+        Polymer({
+            is: 'policy-display',
+            behaviors: [ReduxBehavior],
+            properties: {
+                policyIndex: {
+                    type: Number,
+                    observer: '_policyUpdated'
+                }
+            },
+            ready: function () {
+                this._policyUpdated();
+            },
+            _policyUpdated: function () {
+                var policies = this.getState().policies;
+                var policyIndex = this.policyIndex;
+                console.log(policyIndex);
+                if (policies) {
+                    console.log(policyIndex);
+                    this._policy = policies[policyIndex];
+                    console.log(this._policy);
+                }
+            }
+        });
+    </script>
+</dom-module>
