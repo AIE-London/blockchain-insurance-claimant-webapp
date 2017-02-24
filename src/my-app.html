@@ -21,22 +21,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tab.html">
 <link rel="import" href="./store/redux-store.html">
+<link rel="import" href="./behaviors/claimant-api-behavior.html">
+<link rel="import" href="./shared-styles.html">
 <!--
 <link rel="import" href="../bower_components/socket-io/socket-io.html">
 -->
 
 <link rel="import" href="./icons/myIcons.html">
-<dom-module id="my-app">
+<dom-module id="my-app" >
   <template>
-    <style>
+    <style include="shared-styles">
       :host {
         --app-primary-color: #4285f4;
         --app-secondary-color: black;
 
         display: block;
       }
-
+      paper-progress {
+        width: 100%;
+        --paper-progress-container-color: #eeeeee;
+        --paper-progress-active-color: var(--app-highlight-color);
+      }
       app-header {
         color: #fff;
         background-color: var(--app-primary-color);
@@ -47,6 +56,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .drawer-list {
         margin: 0 20px;
+      }
+
+      paper-tabs {
+        background: var(--app-primary-color);
+        width: 100%;
+        color: #fff;
+        --paper-tabs-selection-bar-color: var(--app-highlight-color);
       }
 
       .drawer-list a {
@@ -68,9 +84,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         opacity: 0.3;
       }
     </style>
-<!--
-    <socket-io id="socket" endpoint="https://blockchain-insurance.eu-gb.mybluemix.net" events="[[events]]"></socket-io>
--->
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
@@ -105,8 +118,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-icon-button icon="myIcons:menu" drawer-toggle></paper-icon-button>
             <div main-title>Your Insurance</div>
           </app-toolbar>
+          <template is="dom-if" if="[[_tabVisible]]">
+            <paper-tabs selected="{{_tab}}" scrollable>
+              <paper-tab>Overview</paper-tab>
+              <template is="dom-repeat" items="[[_tabOptions]]">
+                <paper-tab>[[item]]</paper-tab>
+              </template>
+            </paper-tabs>
+          </template>
+          <paper-progress indeterminate disabled="[[!isLoading]]" bottom-item></paper-progress>
         </app-header>
-
         <iron-pages
             id="pages"
             selected="[[page]]"
@@ -135,16 +156,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     Polymer({
       is: 'my-app',
-      behaviors: [ReduxBehavior],
+      behaviors: [ReduxBehavior, ClaimantAPIBehavior],
       properties: {
+        isLoading: {
+          type: Boolean,
+          statePath: 'isLoading'
+        },
         page: {
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged',
         },
+        _tabVisible: {
+          value: false
+        },
+        _tabOptions: {
+          type: Array,
+          statePath: 'tabsOptions'
+        },
+        _tab: {
+          type: Number,
+          observer: '_tabChanged'
+        },
         token: {
           type: String,
+          statePath: 'token',
           observer: '_tokenChanged'
+        },
+        username: {
+          type: String,
+          statePath: 'username'
         },
         _status: {
           type: Boolean,
@@ -153,6 +194,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
       },
       actions: {
+        setSelectedTab: function(tabSelected) {
+          return {
+            type: 'SET_TABS_SELECTED',
+            selected: tabSelected
+          };
+        },
+        setClaimData: function(claimData) {
+          return {
+            type: 'SET_CLAIMS',
+            claims: claimData
+          };
+        },
         restore: function (initialState) {
           return {
             type: 'RESTORE_CACHED',
@@ -164,6 +217,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             type: 'LOG_OUT',
           };
         },
+      },
+      _tabChanged: function () {
+        this.dispatch('setSelectedTab', this._tab);
       },
       _logOut: function () {
         this.set('route.path', '/');
@@ -190,6 +246,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       observers: [
         '_routePageChanged(routeData.page)',
+        'fetchClaims(username, token)',
       ],
 
       _routePageChanged: function(page) {
@@ -197,6 +254,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
+        }
+        if (this.page === 'claim-detail') {
+          this._tabVisible = true;
+        } else {
+          this._tabVisible = false;
+        }
+        this.fetchClaims();
+        this.dispatch('setSelectedTab', 0);
+      },
+      fetchClaims: function () {
+        if (this.username && this.token) {
+          this.dispatch({
+            type: 'SET_LOADING',
+            isLoading: true
+          });
+          var _this = this;
+          this._claimantApi().getClaims(this.username, this.token).then(function (body) {
+            _this.dispatch('setClaimData', body.results);
+          });
         }
       },
 
