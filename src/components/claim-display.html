@@ -79,7 +79,7 @@
                             <status-bar current-stage="[[_claim.details.status]]"></status-bar>
                         </div>
                         <template is="dom-if" if="[[_claimIsWaitingForUser(_claim.details.status)]]">
-                            <approved-button claim-id="[[_claim.id]]"></approved-button>
+                            <p><strong>You have an offer waiting for your decision, please click the <i on-tap="_moveToDecision">Insurer Decision</i> tab</strong></p>
                         </template>
                     </paper-card>
                 </div>
@@ -180,12 +180,19 @@
                     value: {}
                 }
             },
+            _formSubmitted: function (event) {
+                console.log("claim display");
+                this.fire('submit', {});
+            },
             _getCarValue: function (settlement) {
                 if (settlement) {
                     return settlement['totalLoss'].carValueEstimate;
                 } else {
                     return 0;
                 }
+            },
+            _moveToDecision: function () {
+                this._tab = 2;
             },
             _deductExcess: function (settlement, excess) {
                 return this._getCarValue(settlement) - excess;

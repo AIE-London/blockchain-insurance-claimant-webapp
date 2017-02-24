@@ -26,7 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 pattern="/claim-detail/:claimId"
                 data="{{_routeData}}"
                 tail="{{subroute}}"></app-route>
-        <claim-display claim-id="[[_routeData.claimId]]"></claim-display>
+        <claim-display claim-id="[[_routeData.claimId]]" on-submit="_formSubmitted"></claim-display>
     </template>
 
 
@@ -37,6 +37,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             is: 'my-claim-detail',
             behaviors: [ReduxBehavior],
             properties: {
+            },
+            _formSubmitted: function (event) {
+                this.fire('submit', {});
             },
         });
     </script>
