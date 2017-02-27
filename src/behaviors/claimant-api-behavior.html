@@ -17,13 +17,14 @@
             let _endpoint = this._endpoint;
             let _mockEndpoint = this._mockEndpoint;
             return {
-                login: function (username, password) {
+                login: function (username, password, pushToken) {
                     let headers = new Headers();
                     headers.append("Content-Type", "application/json");
                     return fetch(_endpoint + '/auth',{
                         method: 'POST',
                         headers: headers,
                         body: JSON.stringify({
+                            token: pushToken,
                             username: username,
                             password: password
                         })
