@@ -41,12 +41,23 @@
                     <h2>Claim  data</h2>
                     <paper-dropdown-menu label="Claim type">
                         <paper-listbox id = "listBox" class="dropdown-content" selected = "{{type}}">
-                            <template is="dom-repeat" items="{{typeOptions}}">
+                            <template is="dom-repeat" items="{{typeOptions}}" >
                                 <paper-item>{{item}}</paper-item>
                             </template>
 
                         </paper-listbox>
                     </paper-dropdown-menu>
+
+                    <template is="dom-if" if="[[_viewMultiple(type)]]">
+                        <paper-textarea label="Registration of other Car" value = "{{registration}}"></paper-textarea>
+                        <paper-dropdown-menu label="Were you at Fault?">
+                            <paper-listbox id = "listBox3" class="dropdown-content" selected = "{{fault}}">
+                                <template is="dom-repeat" items="{{faultOptions}}" >
+                                    <paper-item>{{item}}</paper-item>
+                                </template>
+                            </paper-listbox>
+                        </paper-dropdown-menu>
+                    </template>
 
                     <paper-textarea label="Description of incident" value = "{{description}}"></paper-textarea>
 
@@ -55,7 +66,6 @@
                             <template is="dom-repeat" items="{{availablePolicies}}">
                                 <paper-item>{{item.relations.vehicle}}</paper-item>
                             </template>
-
                         </paper-listbox>
                     </paper-dropdown-menu>
 
@@ -104,6 +114,12 @@
                     value: ['Single Party',
                             'Multiple Party']
                 },
+                faultOptions: {
+                    type: Array,
+                    value: [
+                        'Yes',
+                        'No']
+                },
                 availablePolicies: {
                     type: Array,
                     statePath: 'policies'
@@ -114,7 +130,6 @@
                     statePath: 'username',
                 },
             },
-
             ready: function () {
                 var _this = this;
                 this._claimantApi().getAllPolicies(this.username, this.token).then( function(policies) {
@@ -138,7 +153,12 @@
             },
             _getIdForPolicy: function(index) {
                 return this.availablePolicies[index].id
+            },
+
+            _viewMultiple: function(type) {
+                return type === this.typeOptions.indexOf('Multiple Party');
             }
+
         });
     </script>
 </dom-module>
