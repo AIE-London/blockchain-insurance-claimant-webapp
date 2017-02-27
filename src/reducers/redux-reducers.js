@@ -76,12 +76,20 @@ var reducers = function (state, action) {
                 loggedIn: true,
             });
             break;
+
         case 'SET_LOADING':
             console.log(action.isLoading);
             newState = Object.assign({}, state, {
                 isLoading: action.isLoading
             });
             break;
+
+        case 'SET_PUSH_TOKEN':
+            newState = Object.assign({}, state, {
+                pushToken: action.pushToken,
+            });
+            break;
+
         case 'LOG_OUT':
             newState = Object.assign({},
             initialState );
