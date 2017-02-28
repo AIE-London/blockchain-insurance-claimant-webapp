@@ -104,10 +104,16 @@
                     });
 
                 },
-                createClaim: function (token,relatedPolicy, description, date, type, username) {
+                createClaim: function (token,relatedPolicy,registration,fault,description, date, type, username) {
                     let headers = new Headers();
                     headers.append("authorization", "bearer " + token);
                     headers.append("Content-Type", "application/json");
+                    var multiParty = {
+                        otherPartyReg: registration,
+                            atFault:fault,};
+                    if (type === 'Single Party') {
+                            multiParty = undefined;
+                    }
                     return fetch(_endpoint + '/claimant/' + username + '/claim',{
                         method: 'POST',
                         headers: headers,
@@ -115,8 +121,8 @@
                             relatedPolicy: relatedPolicy,
                             description: description,
                             incidentDate: date,
-                            type: type
-                        })
+                            type: "Liability",
+                            multiParty: multiParty})
                     }).then(function (response) {
                         return response.headers.get('Token');
                     });
