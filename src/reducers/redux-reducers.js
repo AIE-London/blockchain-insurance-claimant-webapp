@@ -7,7 +7,8 @@ const initialState = {
     policies: [],
     isLoading: false,
     tabSelected: 0,
-    tabsOptions: []
+    tabsOptions: [],
+    pushToken: ""
 };
 var reducers = function (state, action) {
     var save = true;
@@ -84,6 +85,8 @@ var reducers = function (state, action) {
             break;
 
         case 'SET_PUSH_TOKEN':
+            console.log("Logging action!!!!");
+            console.log(action);
             newState = Object.assign({}, state, {
                 pushToken: action.pushToken,
             });

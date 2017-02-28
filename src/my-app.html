@@ -251,7 +251,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _tokenChanged: function (){
         console.log(this.token);
-        this.dispatch('pushToken', this.token);
+        if (this.token) {
+            this.dispatch({
+                type: 'SET_PUSH_TOKEN',
+                pushToken: this.token
+            });
+        }
       },
       observers: [
         '_routePageChanged(routeData.page)',
