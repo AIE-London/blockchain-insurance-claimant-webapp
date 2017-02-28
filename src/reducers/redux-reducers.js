@@ -7,7 +7,8 @@ const initialState = {
     policies: [],
     isLoading: false,
     tabSelected: 0,
-    tabsOptions: []
+    tabsOptions: [],
+    pushToken: ""
 };
 var reducers = function (state, action) {
     var save = true;
@@ -36,7 +37,6 @@ var reducers = function (state, action) {
             break;
         case 'ADD_CLAIM':
             let addClaimObj = {};
-
             addClaimObj[action.claimId] = action.claim;
 
             newState = Object.assign({}, state, {
@@ -76,12 +76,22 @@ var reducers = function (state, action) {
                 loggedIn: true,
             });
             break;
+
         case 'SET_LOADING':
             console.log(action.isLoading);
             newState = Object.assign({}, state, {
                 isLoading: action.isLoading
             });
             break;
+
+        case 'SET_PUSH_TOKEN':
+            console.log("Logging action!!!!");
+            console.log(action);
+            newState = Object.assign({}, state, {
+                pushToken: action.pushToken,
+            });
+            break;
+
         case 'LOG_OUT':
             newState = Object.assign({},
             initialState );

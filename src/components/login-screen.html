@@ -71,12 +71,14 @@
                     }
                 }
             },
+
             ready: function () {
             },
             _logIn: function (){
-                var _this = this
-                this._claimantApi().login(this.username, this.password).then(function (token) {
+                var _this = this;
+                this._claimantApi().login(this.username, this.password, this.getState().pushToken).then(function (token) {
                    _this.dispatch('addToken', token, _this.username);
+
                 }, function (error) {
                     _this.openToast()
                    console.error(error);
