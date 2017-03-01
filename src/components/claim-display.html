@@ -68,6 +68,20 @@
                     </paper-card>
                 </div>
                 <div class="page">
+                    <paper-card id="pending_liabilities_display" heading="Pending Liabilities">
+                        <div class="card-content">
+                            <div><strong>Description:</strong> [[_claim.details.description]]</div>
+                            <div><strong>Related Policy:</strong> [[_claim.relations.relatedPolicy]]</div>
+                            <div><strong>Incident Date:</strong> [[_claim.details.incident.date]]</div>
+                            <div><strong>Incident Type:</strong> [[_claim.details.incident.type]]</div>
+
+                        </div>
+                        <template is="dom-if" if="[[_claimIsWaitingForUser(_claim.details.status)]]">
+                            <p><strong>You have an offer waiting for your decision, please click the <i on-tap="_moveToDecision">Insurer Decision</i> tab</strong></p>
+                        </template>
+                    </paper-card>
+                </div>
+                <div class="page">
                     <paper-card id="garage_report_display" heading="Garage Report">
                         <div class="card-content">
                             <p><strong>Notes:</strong><i>[[_claim.details.report.notes]]</i></p>
@@ -135,7 +149,7 @@
                 },
                 _tabValues: {
                     type: Array,
-                    value: ['Garage Report', 'Insurer Decision', 'Payments']
+                    value: ['Liabilities','Garage Report','Insurer Decision', 'Payments']
                 },
                 _policy: {
                     value: null
