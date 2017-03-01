@@ -17,7 +17,7 @@
             let _endpoint = this._endpoint;
             let _mockEndpoint = this._mockEndpoint;
             return {
-                login: function (username, password,pushToken) {
+                login: function (username, password) {
                     let headers = new Headers();
                     headers.append("Content-Type", "application/json");
                     return fetch(_endpoint + '/auth',{
@@ -25,8 +25,7 @@
                         headers: headers,
                         body: JSON.stringify({
                             username: username,
-                            password: password,
-                            pushToken: pushToken
+                            password: password
                         })
                     }).then(function(response) {
                         console.log(response);
