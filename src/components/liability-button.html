@@ -1,0 +1,94 @@
+<link rel="import" href="../store/redux-store.html">
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../behaviors/claimant-api-behavior.html">
+
+<dom-module id="liability-button">
+    <template >
+        <style include="shared-styles">
+            :host {
+                display: block;
+
+                padding: 10px;
+            }
+
+            .flex-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            #accept{
+                 background: #4CAF50;
+                 color: black;
+             }
+            #reject{
+                background: #F44336;
+                color: black;
+            }
+
+        </style>
+            <div class="flex-container">
+                    <paper-button id="accept" on-tap="_approvedLiability">Approve Liability</paper-button>
+                    <paper-button id="reject" on-tap="_rejectLiability">Reject Liability</paper-button>
+            </div>
+            <paper-toast id="toast"  horizontal-align="right" text="Liability Accepted"></paper-toast>
+            <paper-toast id="toast2"  horizontal-align="right" text="Liability Rejected"></paper-toast>
+    </template>
+
+
+    <script>
+        /* global ReduxBehavior */
+        Polymer({
+            is: 'liability-button',
+            behaviors: [ReduxBehavior, ClaimantAPIBehavior],
+            properties: {
+                token: {
+                    type: String,
+                    statePath: 'token',
+                },
+                claimId:{
+                    type: String,
+                },
+                username: {
+                    type: String,
+                    statePath: 'username' ,
+                }
+            },
+
+
+            ready: function () {
+            },
+
+            _approvedLiability: function () {
+                console.log("CLICKED");
+                var _this = this;
+                this._claimantApi().approvedLiability(this.claimId,this.token,this.username,true).then(function () {
+                    _this.openToast();
+                    _this.fire('submit', {});
+                });
+            },
+
+            _rejectLiability: function (){
+                console.log("CLICKED");
+                var _this = this;
+                this._claimantApi().approvedLiability(this.claimId,this.token,this.username,false).then(function () {
+                    _this.openToast2();
+                    _this.fire('submit', {});
+                });
+            },
+
+            openToast: function() {
+                this.$.toast.open();
+            },
+            openToast2: function() {
+                this.$.toast2.open();
+            }
+
+        });
+    </script>
+</dom-module>
