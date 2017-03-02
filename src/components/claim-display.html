@@ -101,17 +101,24 @@
                     </paper-card>
                 </div>
                 <div class="page">
-                    <h3 class="title">Payments</h3>
-                    <iron-list items="[[_claim.details.settlement.payments]]">
-                        <template>
-                            <paper-item class$="[[item.status]]">
-                                <paper-item-body two-line>
-                                    <div>Status [[item.status]] - Value £[[item.amount]]</div>
-                                    <div secondary>Recipient: [[item.recipient]]</div>
-                                </paper-item-body>
-                            </paper-item>
-                        </template>
-                    </iron-list>
+                    <paper-card id="payment_display" heading="Payments">
+                        <div class="card-content">
+                            <div class="data_grid">
+                                <div>
+                                <template is="dom-repeat" items="{{_claim.details.settlement.payments}}">
+                                    <p><strong>Value Estimate:</strong><i>£[[item.amount]]</i></p>
+                                    <p><strong>Recipient:</strong><i>[[item.recipient]]</i></p>
+                                    <p><strong>Recipient Type:</strong><i>[[item.recipientType]]</i></p>
+                                    <p><strong>Sender:</strong><i>[[item.sender]]</i></p>
+                                    <p><strong>Sender Type:</strong><i>[[item.senderType]]</i></p>
+                                    <p><strong>Status:</strong><i>[[item.status]]</i></p>
+                                </template>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </paper-card>
                 </div>
             </neon-animated-pages>
         </main>
