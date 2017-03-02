@@ -67,19 +67,7 @@
                         </template>
                     </paper-card>
                 </div>
-                <div class="page">
-                    <h3 class="title">Payments</h3>
-                    <iron-list items="[[_claim.details.settlement.payments]]">
-                        <template>
-                            <paper-item class$="[[item.status]]">
-                                <paper-item-body two-line>
-                                    <div>Status [[item.status]] - Value £[[item.amount]]</div>
-                                    <div secondary>Recipient: [[item.recipient]]</div>
-                                </paper-item-body>
-                            </paper-item>
-                        </template>
-                    </iron-list>
-                </div>
+                
                 <div class="page">
                     <paper-card id="garage_report_display" heading="Garage Report">
                         <div class="card-content">
@@ -148,7 +136,7 @@
                 },
                 _tabValues: {
                     type: Array,
-                    value: ['Liabilities','Garage Report','Insurer Decision', 'Payments']
+                    value: ['Garage Report','Insurer Decision', 'Payments']
                 },
                 _policy: {
                     value: null
