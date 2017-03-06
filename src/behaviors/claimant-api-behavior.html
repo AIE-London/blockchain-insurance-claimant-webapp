@@ -89,6 +89,27 @@
                         return json;
                     });
                 },
+
+                approvedLiability: function (claimId,token,username,agreement) {
+                    let headers = new Headers();
+                    headers.append("Content-Type", "application/json");
+                    headers.append("authorization", "bearer " + token);
+                    return fetch(_endpoint + "/claimant/" + username + "/claim/" + claimId + "/liability/agreement", {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify({
+                            "agreement": agreement
+                        })
+
+                    }).then(function (response) {
+                        console.log(response);
+                        return response.json();
+                    }).then(function (json) {
+                        console.log(json);
+                        return json;
+                    });
+                },
+
                 getClaims: function (username, token) {
                     let headers = new Headers();
                     headers.append("Content-Type", "application/json");
@@ -105,25 +126,27 @@
                     });
 
                 },
-                createClaim: function (token,relatedPolicy,registration,fault,description, date, type, username) {
+                createClaim: function (token,relatedPolicy,registration, fault, description, date, type, username) {
                     let headers = new Headers();
                     headers.append("authorization", "bearer " + token);
                     headers.append("Content-Type", "application/json");
                     var multiParty = {
                         otherPartyReg: registration,
-                            atFault:fault,};
+                        atFault: fault
+                    };
                     if (type === 'Single Party') {
                             multiParty = undefined;
                     }
+                    var body = JSON.stringify({
+                        relatedPolicy: relatedPolicy,
+                        description: description,
+                        incidentDate: date,
+                        type: type,
+                        multiParty: multiParty});
                     return fetch(_endpoint + '/claimant/' + username + '/claim',{
                         method: 'POST',
                         headers: headers,
-                        body: JSON.stringify({
-                            relatedPolicy: relatedPolicy,
-                            description: description,
-                            incidentDate: date,
-                            type: type,
-                            multiParty: multiParty})
+                        body: body
                     }).then(function (response) {
                         return response.headers.get('Token');
                     });

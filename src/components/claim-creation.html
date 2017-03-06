@@ -141,7 +141,8 @@
             },
             _createClaim: function() {
                 var _this = this;
-                this._claimantApi().createClaim(this.token,this._getIdForPolicy(this.policy), this.registration, this.fault === this.faultOptions.indexOf["Yes"],this.description, this._processDate(this.date), this.typeOptions[this.type], this.username).then(function (token) {
+                console.log("Fault : " + this.fault);
+                this._claimantApi().createClaim(this.token, this._getIdForPolicy(this.policy), this.registration, this.fault === this.faultOptions.indexOf("Yes"),this.description, this._processDate(this.date), this.typeOptions[this.type], this.username).then(function (token) {
                     _this.openToast();
                     _this.fire('submit', {});
                 }, function (error) {
