@@ -11,6 +11,7 @@
 <link rel="import" href="status-bar.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="approved-button.html">
+<link rel="import" href="liability-button.html">
 
 <dom-module id="claim-display">
     <template>
@@ -67,7 +68,18 @@
                         </template>
                     </paper-card>
                 </div>
+                <div class="page">
+                    <paper-card id="pending_liabilities" heading="Pending Liabilities">
+                        <div class="card-content">
+                             <div>{{_getLiability(_claim.details.liable)}}</div>
+                            <template is="dom-if" if="[[_claim.details.liable]]">
+                                <liability-button></liability-button>
+                            </template>
+                            
 
+                        </div>
+                    </paper-card>
+                </div>
                 <div class="page">
                     <paper-card id="garage_report_display" heading="Garage Report">
                         <div class="card-content">
@@ -143,7 +155,7 @@
                 },
                 _tabValues: {
                     type: Array,
-                    value: ['Garage Report','Insurer Decision', 'Payments']
+                    value: ['Pending Liabilities','Garage Report','Insurer Decision', 'Payments']
                 },
                 _policy: {
                     value: null
@@ -151,6 +163,7 @@
                 _states: {
                     type: Array,
                     value: [
+                        'awaiting_liability_acceptance',
                         'pending_decision',
                         'awaiting_claimant_confirmation',
                         'settled'
@@ -219,6 +232,15 @@
                     }
                 });
             },
+
+            _getLiability: function (liable) {
+              if (liable) {
+                  return "The claimant has reported that you are liable in this case:";
+              }  else {
+                  return "The claimant has reported that you are NOT liable in this case.";
+              }
+            },
+
             _claimIsWaitingForUser: function (currentState) {
                 if (currentState === "awaiting_claimant_confirmation") {
                     return true;
