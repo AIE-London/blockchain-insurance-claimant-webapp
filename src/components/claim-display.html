@@ -73,9 +73,9 @@
                         <div class="card-content">
                              <div>{{_getLiability(_claim.details.liable)}}</div>
                             <template is="dom-if" if="[[_claim.details.liable]]">
-                                <liability-button></liability-button>
+                                <liability-button claim-id="[[_claim.id]]"></liability-button>
                             </template>
-                            
+
 
                         </div>
                     </paper-card>
