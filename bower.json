@@ -20,7 +20,7 @@
     "iron-list": "PolymerElements/iron-list#^1.4.0",
     "paper-item": "PolymerElements/paper-item#^1.2.1",
     "paper-input": "PolymerElements/paper-input#^1.1.23",
-    "tk-form-dialog": "cloudgz/tk-form-dialog#^0.1.2",
+    "tk-form-dialog": "bigdatagz/tk-form-dialog#^0.1.2",
     "paper-dialog": "PolymerElements/paper-dialog#^1.1.0",
     "paper-button": "PolymerElements/paper-button#^1.0.14",
     "paper-card": "PolymerElements/paper-card#^1.1.4",
